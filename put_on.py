@@ -21,6 +21,6 @@ def make(name: str, mode: Mode, kind: Kind):
     gen_build()
     pk_browser("production" if mode == Mode.PROD else "development")
     if os.path.isdir("public"):
+        print("Publishing...")
         destiny = f"{qin_root}/{'Prod' if mode == Mode.PROD else 'Test'}/{'pub' if kind == Kind.PUB else 'app'}/{name}"
-        print("Making public at:", destiny)
         shutil.copytree("./public", destiny, dirs_exist_ok=True)

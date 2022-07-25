@@ -19,7 +19,7 @@ def generate():
 
 def build():
     print("Building...")
-    os.system("npx tsc --build --verbose")
+    os.system("npx tsc --pretty")
 
 
 def generate_and_build():
