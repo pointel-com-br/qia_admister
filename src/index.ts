@@ -1,4 +1,4 @@
-import { QinPanel } from "qinpel-cps";
+import { QinPanel } from "qin_case";
 import { AdNames } from "./ad-names";
 
 class AdMister extends QinPanel {

@@ -8,7 +8,7 @@ import {
   QinLine,
   QinScroll,
   QinString,
-} from "qinpel-cps";
+} from "qin_case";
 import { AdField } from "./ad-field";
 import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filter";
 import { AdRegister } from "./ad-register";

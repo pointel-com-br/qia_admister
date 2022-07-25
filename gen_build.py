@@ -23,6 +23,7 @@ def build():
 
 
 def generate_and_build():
+    install()
     generate()
     build()
 

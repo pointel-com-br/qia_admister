@@ -10,8 +10,8 @@
   "main": "./build/all.js",
   "types": "./types/all.d.ts",
   "dependencies": {
-    "qinpel-cps": "file:../qin_case",
-    "qinpel-res": "file:../qin_soul"
+    "qin_case": "file:../qin_case",
+    "qin_soul": "file:../qin_soul"
   },
   "devDependencies": {
     "typescript": "^4",

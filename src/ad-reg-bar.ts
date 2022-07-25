@@ -6,7 +6,7 @@ import {
   QinIconPick,
   QinLine,
   QinPopup,
-} from "qinpel-cps";
+} from "qin_case";
 import { AdApprise } from "./ad-apprise";
 import { AdRegister, AdRegMode, AdRegTurn, AdRegTurningMode } from "./ad-register";
 import { AdScope } from "./ad-tools";

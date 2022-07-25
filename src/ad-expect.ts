@@ -1,4 +1,4 @@
-import { QinWaiters } from "qinpel-res";
+import { QinWaiters } from "qin_soul";
 import { AdFilter } from "./ad-filter";
 import { AdScope } from "./ad-tools";
 

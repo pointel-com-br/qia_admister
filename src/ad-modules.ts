@@ -1,4 +1,4 @@
-import { QinAsset } from "qinpel-cps";
+import { QinAsset } from "qin_case";
 import { AdModule } from "./ad-tools";
 
 export class AdModules {

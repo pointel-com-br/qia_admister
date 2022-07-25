@@ -1,4 +1,4 @@
-import { QinColumn, QinLine, QinPanel, QinTabs } from "qinpel-cps";
+import { QinColumn, QinLine, QinPanel, QinTabs } from "qin_case";
 import { AdField } from "./ad-field";
 import { AdRegister } from "./ad-register";
 

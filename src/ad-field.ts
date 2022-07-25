@@ -1,5 +1,5 @@
-import { QinBase, QinEdit, QinLabel, QinMutants, QinMutantsArm, QinRows } from "qinpel-cps";
-import { QinWaiter } from "qinpel-res";
+import { QinBase, QinEdit, QinLabel, QinMutants, QinMutantsArm, QinRows } from "qin_case";
+import { QinWaiter } from "qin_soul";
 import { AdTyped } from "./ad-typed";
 import { AdValued } from "./ad-valued";
 

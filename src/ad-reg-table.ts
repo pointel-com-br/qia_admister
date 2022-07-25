@@ -1,4 +1,4 @@
-import { QinTable } from "qinpel-cps";
+import { QinTable } from "qin_case";
 import { AdRegister } from "./ad-register";
 
 export class AdRegTable extends QinTable {

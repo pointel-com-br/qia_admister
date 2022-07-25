@@ -1,4 +1,4 @@
-import { QinTool } from "qinpel-cps";
+import { QinTool } from "qin_case";
 import { AdApprise } from "./ad-apprise";
 import { AdFilter } from "./ad-filter";
 import { AdRegister } from "./ad-register";

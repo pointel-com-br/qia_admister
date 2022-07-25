@@ -1,4 +1,4 @@
-import { QinAsset, QinButton, QinColumn, QinIcon, QinSplitter, QinStack } from "qinpel-cps";
+import { QinAsset, QinButton, QinColumn, QinIcon, QinSplitter, QinStack } from "qin_case";
 import { AdApprise, AdApprised } from "./ad-apprise";
 import { AdExpect } from "./ad-expect";
 import { AdField } from "./ad-field";

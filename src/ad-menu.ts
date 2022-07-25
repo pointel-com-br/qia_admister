@@ -7,8 +7,8 @@ import {
   QinLine,
   QinTitled,
   QinTool,
-} from "qinpel-cps";
-import { QinGrandeur } from "qinpel-res";
+} from "qin_case";
+import { QinGrandeur } from "qin_soul";
 import { AdExpect } from "./ad-expect";
 import { AdNames } from "./ad-names";
 import { AdRegister } from "./ad-register";
@@ -25,7 +25,9 @@ export class AdMenu extends QinColumn {
         icon: new QinIcon(item.module.icon, QinGrandeur.MEDIUM),
         label: new QinLabel(item.module.title),
       });
-      button.styled({ maxWidth: "100px" });
+      button.style.putAsMargin(2);
+      button.style.putAsPadding(3);
+      button.style.putAsMaxWidth(100);
       button.putAsColumn();
       button.addActionMain((_) => {
         this.qinpel.chief.newJobber(

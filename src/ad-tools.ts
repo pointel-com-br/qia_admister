@@ -5,7 +5,7 @@ import {
   QinMutants,
   QinStringSet,
   QinSuggestionSet,
-} from "qinpel-cps";
+} from "qin_case";
 import { AdField } from "./ad-field";
 import { AdFilter } from "./ad-filter";
 import { AdNames } from "./ad-names";

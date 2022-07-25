@@ -1,4 +1,4 @@
-import { QinNature } from "qinpel-res";
+import { QinNature } from "qin_soul";
 
 export type AdNamed = {
   name: string;
