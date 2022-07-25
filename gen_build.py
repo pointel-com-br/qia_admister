@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
-
 import os
 import sys
+
+
+def install():
+    print("Installing...")
+    if not os.path.isdir("node_modules"):
+        os.system("npm install")
 
 
 def generate():
