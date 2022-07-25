@@ -25,8 +25,8 @@ export class AdMenu extends QinColumn {
         icon: new QinIcon(item.module.icon, QinGrandeur.MEDIUM),
         label: new QinLabel(item.module.title),
       });
-      button.style.putAsMargin(2);
-      button.style.putAsPadding(3);
+      button.style.putAsMargin(3);
+      button.style.putAsPadding(9);
       button.style.putAsMaxWidth(100);
       button.putAsColumn();
       button.addActionMain((_) => {
