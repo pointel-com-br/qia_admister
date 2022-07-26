@@ -6,7 +6,7 @@ import sys
 def install():
     print("Installing...")
     if not os.path.isdir("node_modules"):
-        os.system("npm install")
+        os.system("npm install --silent")
 
 
 def generate():
