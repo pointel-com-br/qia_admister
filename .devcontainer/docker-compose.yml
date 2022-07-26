@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  qcode_ser_qia_admister:
+    tty: true
+    stdin_open: true
+    container_name: qcode_qia_admister
+    image: pointeldevs/stk_node
+    volumes:
+      - ${QIN_ROOT}/Work:/root
+      - ${QIN_ROOT}/Code:/root/Code
+      - ${QIN_ROOT}/Prod:/root/Prod
+      - ${QIN_ROOT}/Test:/root/Test
+    environment:
+      - QIN_ROOT=/root
+    networks:
+      - qin_net_stk
+    working_dir: /root/Code/qia_admister
+
+networks:
+  qin_net_stk:
+    external: true
