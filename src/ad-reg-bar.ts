@@ -14,7 +14,9 @@ import { AdScope } from "./ad-tools";
 export class AdRegBar extends QinLine {
   private _reg: AdRegister;
 
-  private _qinMenu = new QinButton({ icon: new QinIcon(QinAsset.FaceMenuLines) });
+  private _qinMenu = new QinButton({
+    icon: new QinIcon(QinAsset.FaceMenuLines),
+  });
   private _qinMenuViewSingle = new QinButton({
     icon: new QinIcon(QinAsset.FaceSplitNotView),
   });
@@ -48,7 +50,9 @@ export class AdRegBar extends QinLine {
 
   private _qinMode = new QinIconPick({ readOnly: true });
 
-  private _qinGoFirst = new QinButton({ icon: new QinIcon(QinAsset.FaceRUpChevronPush) });
+  private _qinGoFirst = new QinButton({
+    icon: new QinIcon(QinAsset.FaceRUpChevronPush),
+  });
   private _qinGoPrior = new QinButton({
     icon: new QinIcon(QinAsset.FaceRLeftChevronPush),
   });
@@ -59,10 +63,18 @@ export class AdRegBar extends QinLine {
     icon: new QinIcon(QinAsset.FaceRDownChevronPush),
   });
 
-  private _qinMutate = new QinButton({ icon: new QinIcon(QinAsset.FacePencil) });
-  private _qinConfirm = new QinButton({ icon: new QinIcon(QinAsset.FaceConfirm) });
-  private _qinCancel = new QinButton({ icon: new QinIcon(QinAsset.FaceCancel) });
-  private _qinDelete = new QinButton({ icon: new QinIcon(QinAsset.FaceTrash) });
+  private _qinMutate = new QinButton({
+    icon: new QinIcon(QinAsset.FacePencil),
+  });
+  private _qinConfirm = new QinButton({
+    icon: new QinIcon(QinAsset.FaceConfirm),
+  });
+  private _qinCancel = new QinButton({
+    icon: new QinIcon(QinAsset.FaceCancel),
+  });
+  private _qinDelete = new QinButton({
+    icon: new QinIcon(QinAsset.FaceTrash),
+  });
 
   public constructor(register: AdRegister) {
     super();
@@ -78,6 +90,7 @@ export class AdRegBar extends QinLine {
 
   private initMenu() {
     this._qinMenu.install(this);
+    this._qinMenu.style.putAsPadding(7);
     this._qinMenu.addActionMain((_) => this._qinPopup.showOnParent(this._qinMenu));
     this._qinMenuViewSingle.addActionMain((_) => {
       this._qinPopup.close();
@@ -141,31 +154,39 @@ export class AdRegBar extends QinLine {
 
   private initMove() {
     this._qinGoFirst.install(this);
+    this._qinGoFirst.style.putAsPadding(7);
     this._qinGoFirst.addActionMain((_) => this._reg.tryGoFirst());
     this._qinGoPrior.install(this);
+    this._qinGoPrior.style.putAsPadding(7);
     this._qinGoPrior.addActionMain((_) => this._reg.tryGoPrior());
     this._qinGoNext.install(this);
+    this._qinGoNext.style.putAsPadding(7);
     this._qinGoNext.addActionMain((_) => this._reg.tryGoNext());
     this._qinGoLast.install(this);
+    this._qinGoLast.style.putAsPadding(7);
     this._qinGoLast.addActionMain((_) => this._reg.tryGoLast());
   }
 
   private initMake() {
     this._qinMutate.install(this);
+    this._qinMutate.style.putAsPadding(7);
     this._qinMutate.addActionMain((_) =>
       this._reg.tryTurnMutate().catch((err) => {
         this._reg.displayError(err, "{adcommon}(ErrCode-000012)");
       })
     );
     this._qinConfirm.install(this);
+    this._qinConfirm.style.putAsPadding(7);
     this._qinConfirm.addActionMain((_) =>
       this._reg.tryConfirm().catch((err) => {
         this._reg.displayError(err, "{adcommon}(ErrCode-000007)");
       })
     );
     this._qinCancel.install(this);
+    this._qinCancel.style.putAsPadding(7);
     this._qinCancel.addActionMain((_) => this._reg.tryCancel());
     this._qinDelete.install(this);
+    this._qinDelete.style.putAsPadding(7);
     this._qinDelete.addActionMain((_) =>
       this._reg
         .tryDelete()
