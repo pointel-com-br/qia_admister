@@ -18,6 +18,7 @@ export class AdRegEditor extends QinPanel {
     if (this._tabs == null) {
       this._tabs = new QinTabs();
       this._tabs.install(this);
+      this._tabs.style.putAsMarginTop(3);
     }
     this._column = new QinColumn();
     this._tabs.addTab({ title, viewer: this._column });
