@@ -133,17 +133,17 @@ export class AdRegBar extends QinLine {
     }
     this._qinInsert.addActionMain((_) =>
       this._reg.tryTurnInsert().catch((err) => {
-        this._reg.displayError(err, "{adcommon}(ErrCode-000003)");
+        this._reg.displayError(err, "{qia_admister}(ErrCode-000003)");
       })
     );
     this._qinSearch.addActionMain((_) =>
       this._reg.tryTurnSearch().catch((err) => {
-        this._reg.displayError(err, "{adcommon}(ErrCode-000004)");
+        this._reg.displayError(err, "{qia_admister}(ErrCode-000004)");
       })
     );
     this._qinNotice.addActionMain((_) =>
       this._reg.tryTurnNotice().catch((err) => {
-        this._reg.displayError(err, "{adcommon}(ErrCode-000005)");
+        this._reg.displayError(err, "{qia_admister}(ErrCode-000005)");
       })
     );
     this._reg.addListener({
@@ -172,14 +172,14 @@ export class AdRegBar extends QinLine {
     this._qinMutate.style.putAsPadding(7);
     this._qinMutate.addActionMain((_) =>
       this._reg.tryTurnMutate().catch((err) => {
-        this._reg.displayError(err, "{adcommon}(ErrCode-000012)");
+        this._reg.displayError(err, "{qia_admister}(ErrCode-000012)");
       })
     );
     this._qinConfirm.install(this);
     this._qinConfirm.style.putAsPadding(7);
     this._qinConfirm.addActionMain((_) =>
       this._reg.tryConfirm().catch((err) => {
-        this._reg.displayError(err, "{adcommon}(ErrCode-000007)");
+        this._reg.displayError(err, "{qia_admister}(ErrCode-000007)");
       })
     );
     this._qinCancel.install(this);
@@ -191,10 +191,13 @@ export class AdRegBar extends QinLine {
       this._reg
         .tryDelete()
         .then((_) => {
-          this.qinpel.jobbed.showInfo(AdApprise.DELETED_REGISTER, "{adcommon}(ErrCode-000011)");
+          this.qinpel.jobbed.showInfo(
+            AdApprise.DELETED_REGISTER,
+            "{qia_admister}(ErrCode-000011)"
+          );
         })
         .catch((err) => {
-          this._reg.displayError(err, "{adcommon}(ErrCode-000006)");
+          this._reg.displayError(err, "{qia_admister}(ErrCode-000006)");
         })
     );
   }

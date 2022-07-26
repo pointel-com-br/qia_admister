@@ -47,7 +47,10 @@ export class AdRegLoader {
               this._reg.table.delLines();
               let rows = QinTool.qinpel.our.soul.body.getCSVRows(res.data);
               if (rows.length == 0) {
-                this._reg.displayInfo(AdApprise.NO_RESULTS_FOUND, "{adcommon}(ErrCode-000008)");
+                this._reg.displayInfo(
+                  AdApprise.NO_RESULTS_FOUND,
+                  "{qia_admister}(ErrCode-000008)"
+                );
               } else {
                 for (let row of rows) {
                   this._reg.table.addLine(row);

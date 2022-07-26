@@ -99,6 +99,10 @@ export class AdRegister extends QinColumn {
     return this._regMode;
   }
 
+  public get regModeEditable(): boolean {
+    return this.regMode != AdRegMode.NOTICE;
+  }
+
   public get regView(): AdRegView {
     return this._regView;
   }
@@ -163,15 +167,22 @@ export class AdRegister extends QinColumn {
             }
           });
           if (allLinkedFields.length > 0) {
-            let button = new QinButton({ icon: new QinIcon(QinAsset.FaceSearchLink) });
-            allLinkedFields[allLinkedFields.length - 1].rows.putOn(1, button);
-            button.addActionMain((_) => {
+            let callRelater = new QinButton({ icon: new QinIcon(QinAsset.FaceSearchLink) });
+            allLinkedFields[allLinkedFields.length - 1].rows.putOn(1, callRelater);
+            callRelater.addActionMain((_) => {
               let jobber = this.qinpel.chief.newJobber(
                 join.module.title,
                 join.module.appName,
                 AdTools.newAdSetupOption(join.module, [AdScope.RELATE])
               );
               jobber.addWaiter((res) => {
+                if (!this.regModeEditable) {
+                  this.qinpel.jobbed.showError(
+                    "You should not receive a related register on a not editable mode.",
+                    "{qia_admister}(ErrCode-000014)"
+                  );
+                  return;
+                }
                 for (let i = 0; i < allLinkedFields.length; i++) {
                   let linkedValue = res[allLinkedWith[i]];
                   allLinkedFields[i].value = linkedValue;
@@ -236,7 +247,7 @@ export class AdRegister extends QinColumn {
         }
       })
       .catch((err) => {
-        this.displayError(err, "{adcommon}(ErrCode-000013)");
+        this.displayError(err, "{qia_admister}(ErrCode-000013)");
       });
   }
 
@@ -457,7 +468,7 @@ export class AdRegister extends QinColumn {
         .then((res) => {
           this._model.clean();
           this.focusFirstField();
-          this.displayInfo(AdApprise.INSERTED_REGISTER, "{adcommon}(ErrCode-000009)");
+          this.displayInfo(AdApprise.INSERTED_REGISTER, "{qia_admister}(ErrCode-000009)");
           let values = res.map((valued) => valued.data);
           this._table.addLine(values);
           resolve();
@@ -474,7 +485,7 @@ export class AdRegister extends QinColumn {
         .update()
         .then((res) => {
           this.focusFirstField();
-          this.displayInfo(AdApprise.UPDATED_REGISTER, "{adcommon}(ErrCode-000010)");
+          this.displayInfo(AdApprise.UPDATED_REGISTER, "{qia_admister}(ErrCode-000010)");
           let values = res.map((valued) => valued.data);
           this._table.setLine(this._seeRow, values);
           this.tryTurnMode(AdRegMode.NOTICE);
