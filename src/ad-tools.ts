@@ -50,6 +50,24 @@ function newAdSetupOption(module: AdModule, scopes: AdScope[], filters?: AdFilte
   return result;
 }
 
+function newAdFieldInteger(name: string, title: string): AdField {
+  return new AdField({
+    key: true,
+    name: name,
+    title: title,
+    kind: QinMutants.INTEGER,
+  });
+}
+
+function newAdFieldNumeric(name: string, title: string): AdField {
+  return new AdField({
+    key: true,
+    name: name,
+    title: title,
+    kind: QinMutants.NUMERIC,
+  });
+}
+
 function newAdFieldString(name: string, title: string, maxLength: number): AdField {
   return new AdField({
     key: true,
@@ -124,6 +142,8 @@ export const AdTools = {
   isSameModule,
   newAdSetup,
   newAdSetupOption,
+  newAdFieldInteger,
+  newAdFieldNumeric,
   newAdFieldString,
   newAdFieldSuggestion,
   newAdFieldDate,
