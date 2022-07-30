@@ -1,4 +1,12 @@
-import { QinAsset, QinButton, QinColumn, QinIcon, QinSplitter, QinStack } from "qin_case";
+import {
+  QinAsset,
+  QinButton,
+  QinColumn,
+  QinIcon,
+  QinLabel,
+  QinSplitter,
+  QinStack,
+} from "qin_case";
 import { AdApprise, AdApprised } from "./ad-apprise";
 import { AdExpect } from "./ad-expect";
 import { AdField } from "./ad-field";
@@ -6,6 +14,7 @@ import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filte
 import { AdJoined } from "./ad-joined";
 import { AdRegBar } from "./ad-reg-bar";
 import { AdRegBase } from "./ad-reg-base";
+import { AdRegDetail } from "./ad-reg-detail";
 import { AdRegEditor } from "./ad-reg-editor";
 import { AdRegLoader } from "./ad-reg-loader";
 import { AdRegModel } from "./ad-reg-model";
@@ -140,6 +149,11 @@ export class AdRegister extends QinColumn {
     this._editor.addField(field);
     this._search.addField(field);
     this._table.addHead(field.title);
+  }
+
+  public addDetail(detail: AdRegDetail) {
+    let button = new QinButton({ label: new QinLabel(detail.title) });
+    this._editor.addAct(button);
   }
 
   public prepare() {

@@ -1,13 +1,15 @@
-import { QinColumn, QinLine, QinPanel, QinTabs } from "qin_case";
+import { QinBase, QinColumn, QinLine, QinTabs } from "qin_case";
 import { AdField } from "./ad-field";
 import { AdRegister } from "./ad-register";
 
-export class AdRegEditor extends QinPanel {
+export class AdRegEditor extends QinColumn {
   private _reg: AdRegister;
 
   private _tabs: QinTabs = null;
   private _column: QinColumn = null;
   private _line: QinLine = null;
+
+  private _acts: QinLine = null;
 
   public constructor(register: AdRegister) {
     super();
@@ -40,5 +42,13 @@ export class AdRegEditor extends QinPanel {
       this.addLine();
     }
     field.install(this._line);
+  }
+
+  public addAct(kindred: QinBase) {
+    if (this._acts == null) {
+      this._acts = new QinLine();
+      this._acts.install(this);
+    }
+    kindred.install(this._acts);
   }
 }
