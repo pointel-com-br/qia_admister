@@ -47,4 +47,9 @@ export class AdModules {
     title: "SubGrupos de Pessoas",
     icon: QinAsset.FacePeopleSubgroup,
   };
+  static MY_PRICES: AdModule = {
+    appName: "adsales",
+    title: "Meus Preços",
+    icon: QinAsset.FaceMyPrices,
+  };
 }
