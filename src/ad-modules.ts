@@ -47,9 +47,24 @@ export class AdModules {
     title: "SubGrupos de Pessoas",
     icon: QinAsset.FacePeopleSubgroup,
   };
-  static MY_PRICES: AdModule = {
+  static PRODUCTS: AdModule = {
     appName: "adsales",
-    title: "Meus Preços",
-    icon: QinAsset.FaceMyPrices,
+    title: "Produtos",
+    icon: QinAsset.FaceProduct,
+  };
+  static PRODUCTS_GROUP: AdModule = {
+    appName: "adsales",
+    title: "Grupos de Produtos",
+    icon: QinAsset.FaceProductGroup,
+  };
+  static PRODUCTS_SUBGROUP: AdModule = {
+    appName: "adsales",
+    title: "SubGrupos de Produtos",
+    icon: QinAsset.FaceProductSubgroup,
+  };
+  static PRICES: AdModule = {
+    appName: "adsales",
+    title: "Preços",
+    icon: QinAsset.FacePrices,
   };
 }
