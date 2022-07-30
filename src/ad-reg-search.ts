@@ -37,7 +37,6 @@ export class AdRegSearch extends QinScroll {
     });
   }
 
-  // [ EVAL ] - How to make addClause private?
   public addClause(after: SearchClause) {
     const clause = new SearchClause(this);
     this._reg.model.fields.forEach((field) => {
@@ -48,7 +47,6 @@ export class AdRegSearch extends QinScroll {
     this.rebuild();
   }
 
-  // [ EVAL ] - How to make delClause private?
   public delClause(clause: SearchClause) {
     if (this._clauses.length > 1) {
       const index = this._clauses.indexOf(clause);
