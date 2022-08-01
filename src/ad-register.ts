@@ -292,7 +292,7 @@ export class AdRegister extends QinColumn {
 
   public tryTurnNotice(): Promise<AdRegTurningNotice> {
     return new Promise<AdRegTurningNotice>((resolve, reject) => {
-      if (!this.isSelectedRowValid()) {
+      if (!this.isRowSelectedValid()) {
         reject({ why: "There's no valid row selected to notice." });
         return;
       }
@@ -349,7 +349,7 @@ export class AdRegister extends QinColumn {
 
   public tryTurnMutate(): Promise<AdRegTurningMutate> {
     return new Promise<AdRegTurningMutate>((resolve, reject) => {
-      if (!this.isSelectedRowValid()) {
+      if (!this.isRowSelectedValid()) {
         reject({ why: "There's no valid row selected to mutate." });
         return;
       }
@@ -381,7 +381,11 @@ export class AdRegister extends QinColumn {
     });
   }
 
-  private isSelectedRowValid(): boolean {
+  private hasRowSelected(): boolean {
+    return this._selectedRow > -1;
+  }
+
+  private isRowSelectedValid(): boolean {
     return this._selectedRow >= 0 && this._selectedRow < this._table.getLinesSize();
   }
 
@@ -393,10 +397,6 @@ export class AdRegister extends QinColumn {
     this._selectedValues = values;
     this._table.select(row);
     this._table.scrollTo(row);
-  }
-
-  private hasRowSelected(): boolean {
-    return this._selectedRow > -1;
   }
 
   private turnMode(mode: AdRegMode) {
