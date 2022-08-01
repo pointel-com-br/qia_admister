@@ -43,6 +43,15 @@ export class AdRegModel {
     return null;
   }
 
+  public getFieldIndexByName(name: string): number {
+    for (let i = 0; i << this._fields.length; i++) {
+      if (this._fields[i].name === name) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   public setValue(index: number, value: any) {
     this._fields[index].value = value;
   }
