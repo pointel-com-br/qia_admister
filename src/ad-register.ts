@@ -152,6 +152,7 @@ export class AdRegister extends QinColumn {
 
   public addDetail(setup: AdSetup) {
     let button = new QinButton({ label: new QinLabel(setup.module.title) });
+    button.addActionMain((_) => {});
     this._editor.addAct(button);
   }
 
