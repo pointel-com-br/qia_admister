@@ -141,7 +141,7 @@ class SearchClause extends QinLine {
     if (!field) {
       return null;
     }
-    return new AdFilter({
+    return {
       seems: this._qinSame.value as AdFilterSeems,
       likes: this._qinLikes.value as AdFilterLikes,
       valued: {
@@ -150,7 +150,7 @@ class SearchClause extends QinLine {
         data: this._qinValue.value,
       },
       ties: this._qinTies.value as AdFilterTies,
-    });
+    };
   }
 }
 

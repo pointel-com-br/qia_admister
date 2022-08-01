@@ -167,12 +167,12 @@ export class AdRegModel {
     let result: AdFilter[] = [];
     for (let field of this._fields) {
       if (field.key) {
-        let filter = new AdFilter({
+        let filter = {
           seems: AdFilterSeems.SAME,
           likes: AdFilterLikes.EQUALS,
           valued: field.valued,
           ties: AdFilterTies.AND,
-        });
+        };
         result.push(filter);
       }
     }

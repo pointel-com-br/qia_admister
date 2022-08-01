@@ -151,7 +151,7 @@ export class AdRegister extends QinColumn {
   }
 
   public addDetail(setup: AdSetup) {
-    let button = new QinButton({ label: new QinLabel(detail.title) });
+    let button = new QinButton({ label: new QinLabel(setup.module.title) });
     this._editor.addAct(button);
   }
 
@@ -227,7 +227,7 @@ export class AdRegister extends QinColumn {
       for (let filter of joined.filters) {
         if (filter.linked) {
           let fromField = this._model.getFieldByName(filter.linked.name);
-          let thisFilter = new AdFilter({
+          let thisFilter = {
             seems: AdFilterSeems.SAME,
             likes: AdFilterLikes.EQUALS,
             valued: {
@@ -236,7 +236,7 @@ export class AdRegister extends QinColumn {
               data: fromField.valued.data,
             },
             ties: AdFilterTies.AND,
-          });
+          };
           filters.push(thisFilter);
         } else {
           filters.push(filter);

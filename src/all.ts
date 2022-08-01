@@ -8,7 +8,6 @@ export { AdFieldSet } from "./ad-field";
 export { AdFilter } from "./ad-filter";
 export { AdFilterLikes } from "./ad-filter";
 export { AdFilterSeems } from "./ad-filter";
-export { AdFilterSet } from "./ad-filter";
 export { AdFilterTies } from "./ad-filter";
 export { AdInsert } from "./ad-insert";
 export { AdJoined } from "./ad-joined";
