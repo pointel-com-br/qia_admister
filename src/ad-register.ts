@@ -14,7 +14,6 @@ import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filte
 import { AdJoined } from "./ad-joined";
 import { AdRegBar } from "./ad-reg-bar";
 import { AdRegBase } from "./ad-reg-base";
-import { AdRegDetail } from "./ad-reg-detail";
 import { AdRegEditor } from "./ad-reg-editor";
 import { AdRegLoader } from "./ad-reg-loader";
 import { AdRegModel } from "./ad-reg-model";
@@ -22,7 +21,7 @@ import { AdRegSearch } from "./ad-reg-search";
 import { AdRegTable } from "./ad-reg-table";
 import { AdRegistry } from "./ad-registry";
 import { AdSelect } from "./ad-select";
-import { AdModule, AdScope, AdTools } from "./ad-tools";
+import { AdModule, AdScope, AdSetup, AdTools } from "./ad-tools";
 import { AdTyped } from "./ad-typed";
 
 export class AdRegister extends QinColumn {
@@ -151,7 +150,7 @@ export class AdRegister extends QinColumn {
     this._table.addHead(field.title);
   }
 
-  public addDetail(detail: AdRegDetail) {
+  public addDetail(setup: AdSetup) {
     let button = new QinButton({ label: new QinLabel(detail.title) });
     this._editor.addAct(button);
   }
