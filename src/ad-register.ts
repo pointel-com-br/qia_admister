@@ -44,8 +44,8 @@ export class AdRegister extends QinColumn {
 
   private _regMode: AdRegMode;
   private _regView: AdRegView;
-  private _seeRow: number = -1;
-  private _seeValues: string[] = null;
+  private _selectedRow: number = -1;
+  private _selectedValues: string[] = null;
   private _listener = new Array<AdRegListener>();
 
   public constructor(module: AdModule, expect: AdExpect, base: AdRegBase) {
@@ -292,21 +292,21 @@ export class AdRegister extends QinColumn {
 
   public tryTurnNotice(): Promise<AdRegTurningNotice> {
     return new Promise<AdRegTurningNotice>((resolve, reject) => {
-      if (!this.isSeeRowValid()) {
+      if (!this.isSelectedRowValid()) {
         reject({ why: "There's no valid row selected to notice." });
         return;
       }
       this.tryTurnMode(AdRegMode.NOTICE)
         .then(() => {
           let turningNotice = {
-            oldRow: this._seeRow,
-            newRow: this._seeRow,
+            oldRow: this._selectedRow,
+            newRow: this._selectedRow,
           } as AdRegTurningNotice;
           let canceledNotice = this.callTryListeners(AdRegTurn.TURN_NOTICE, turningNotice);
           if (canceledNotice) {
             reject(canceledNotice);
           }
-          this.setRowAndValues(this._seeRow, this._seeValues);
+          this.selectRowAndValues(this._selectedRow, this._selectedValues);
           this.callDidListeners(AdRegTurn.TURN_NOTICE, turningNotice);
           resolve(turningNotice);
         })
@@ -330,14 +330,14 @@ export class AdRegister extends QinColumn {
       this.tryTurnMode(AdRegMode.NOTICE)
         .then(() => {
           let turningNotice = {
-            oldRow: this._seeRow,
+            oldRow: this._selectedRow,
             newRow: row,
           } as AdRegTurningNotice;
           let canceledNotice = this.callTryListeners(AdRegTurn.TURN_NOTICE, turningNotice);
           if (canceledNotice) {
             reject(canceledNotice);
           }
-          this.setRowAndValues(row, values);
+          this.selectRowAndValues(row, values);
           this.callDidListeners(AdRegTurn.TURN_NOTICE, turningNotice);
           resolve(turningNotice);
         })
@@ -349,7 +349,7 @@ export class AdRegister extends QinColumn {
 
   public tryTurnMutate(): Promise<AdRegTurningMutate> {
     return new Promise<AdRegTurningMutate>((resolve, reject) => {
-      if (!this.isSeeRowValid()) {
+      if (!this.isSelectedRowValid()) {
         reject({ why: "There's no valid row selected to mutate." });
         return;
       }
@@ -381,22 +381,22 @@ export class AdRegister extends QinColumn {
     });
   }
 
-  private isSeeRowValid(): boolean {
-    return this._seeRow >= 0 && this._seeRow < this._table.getLinesSize();
+  private isSelectedRowValid(): boolean {
+    return this._selectedRow >= 0 && this._selectedRow < this._table.getLinesSize();
   }
 
-  private setRowAndValues(row: number, values: string[]) {
+  private selectRowAndValues(row: number, values: string[]) {
     for (let i = 0; i < values.length; i++) {
       this._model.setValue(i, values[i]);
     }
-    this._seeRow = row;
-    this._seeValues = values;
+    this._selectedRow = row;
+    this._selectedValues = values;
     this._table.select(row);
     this._table.scrollTo(row);
   }
 
-  private isThereAnyRowSelected(): boolean {
-    return this._seeRow > -1;
+  private hasRowSelected(): boolean {
+    return this._selectedRow > -1;
   }
 
   private turnMode(mode: AdRegMode) {
@@ -417,7 +417,7 @@ export class AdRegister extends QinColumn {
     return new Promise<void>((resolve, reject) => {
       this.checkForMutations()
         .then(() => {
-          this._seeRow = -1;
+          this._selectedRow = -1;
           this._table.unselectAll();
           this._model.clean();
           resolve();
@@ -437,7 +437,7 @@ export class AdRegister extends QinColumn {
 
   public tryGoPrior() {
     let size = this._table.getLinesSize();
-    let attempt = this._seeRow - 1;
+    let attempt = this._selectedRow - 1;
     if (attempt >= 0 && attempt < size) {
       let values = this._table.getLine(attempt);
       this.tryTurnNoticeRow(attempt, values);
@@ -446,7 +446,7 @@ export class AdRegister extends QinColumn {
 
   public tryGoNext() {
     let size = this._table.getLinesSize();
-    let attempt = this._seeRow + 1;
+    let attempt = this._selectedRow + 1;
     if (attempt < size) {
       let values = this._table.getLine(attempt);
       this.tryTurnNoticeRow(attempt, values);
@@ -501,7 +501,7 @@ export class AdRegister extends QinColumn {
           this.focusFirstField();
           this.displayInfo(AdApprise.UPDATED_REGISTER, "{qia_admister}(ErrCode-000010)");
           let values = res.map((valued) => valued.data);
-          this._table.setLine(this._seeRow, values);
+          this._table.setLine(this._selectedRow, values);
           this.tryTurnMode(AdRegMode.NOTICE);
           resolve();
         })
@@ -525,7 +525,7 @@ export class AdRegister extends QinColumn {
     return new Promise<AdRegTurningDelete>((resolve, reject) => {
       this.checkForMutations()
         .then(() => {
-          if (!this.isThereAnyRowSelected()) {
+          if (!this.hasRowSelected()) {
             reject({ why: "No selected row to delete" });
             return;
           }
@@ -534,7 +534,7 @@ export class AdRegister extends QinColumn {
             .then((want) => {
               if (want) {
                 let turning = {
-                  seeRow: this._seeRow,
+                  seeRow: this._selectedRow,
                 } as AdRegTurningDelete;
                 let canceled = this.callTryListeners(AdRegTurn.TURN_DELETE, turning);
                 if (canceled) {
@@ -543,7 +543,7 @@ export class AdRegister extends QinColumn {
                 this._model
                   .delete()
                   .then(() => {
-                    this._table.delLine(this._seeRow);
+                    this._table.delLine(this._selectedRow);
                     this.callDidListeners(AdRegTurn.TURN_DELETE, turning);
                     this.tryTurnMode(AdRegMode.INSERT);
                     resolve(turning);
