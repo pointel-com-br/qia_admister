@@ -44,7 +44,7 @@ export class AdRegModel {
   }
 
   public getFieldIndexByName(name: string): number {
-    for (let i = 0; i << this._fields.length; i++) {
+    for (let i = 0; i < this._fields.length; i++) {
       if (this._fields[i].name === name) {
         return i;
       }

@@ -151,8 +151,43 @@ export class AdRegister extends QinColumn {
   }
 
   public addDetail(setup: AdSetup) {
-    let button = new QinButton({ label: new QinLabel(setup.module.title) });
-    button.addActionMain((_) => {});
+    const title = setup.module.title;
+    let button = new QinButton({ label: new QinLabel(title) });
+    button.addActionMain((_) => {
+      if (!this.hasRowSelected()) {
+        this.qinpel.jobbed.showError(
+          "You must select a row before show the details of " + title,
+          "{qia_admister}(ErrCode-000015)"
+        );
+        return;
+      }
+      let detailFilters: AdFilter[] = [];
+      if (setup.filters) {
+        for (let filter of setup.filters) {
+          if (filter.linked) {
+            let indexField = this._model.getFieldIndexByName(filter.linked.with);
+            let fixedValue = this._selectedValues[indexField];
+            detailFilters.push({
+              seems: AdFilterSeems.SAME,
+              likes: AdFilterLikes.EQUALS,
+              valued: {
+                name: filter.linked.name,
+                type: this._model.fields[indexField].typed.type,
+                data: fixedValue,
+              },
+              ties: AdFilterTies.AND,
+            });
+          } else {
+            detailFilters.push(filter);
+          }
+        }
+      }
+      this.qinpel.chief.newJobber(
+        setup.module.title,
+        setup.module.appName,
+        AdTools.newAdSetupOption(setup.module, setup.scopes, detailFilters)
+      );
+    });
     this._editor.addAct(button);
   }
 
