@@ -203,6 +203,7 @@ export class AdRegister extends QinColumn {
     if (this._base.joins) {
       this.initJoins();
     }
+    this.applyPermissions();
   }
 
   private initJoins() {
@@ -302,6 +303,13 @@ export class AdRegister extends QinColumn {
       .catch((err) => {
         this.displayError(err, "{qia_admister}(ErrCode-000013)");
       });
+  }
+
+  private applyPermissions() {
+    this.qinpel.talk
+      .post("/reg/can", this._base.registry)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
   }
 
   public hasScope(scope: AdScope): boolean {
