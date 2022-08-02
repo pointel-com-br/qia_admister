@@ -50,6 +50,7 @@ export class AdRegister extends QinColumn {
 
   public constructor(module: AdModule, expect: AdExpect, base: AdRegBase) {
     super();
+    this.unVisible();
     this._module = module;
     this._expect = expect;
     this._base = base;
@@ -192,14 +193,6 @@ export class AdRegister extends QinColumn {
   }
 
   public prepare() {
-    this._model.clean();
-    if (
-      this._expect.scopes.find((scope) => scope === AdScope.ALL || scope === AdScope.INSERT)
-    ) {
-      this.tryTurnMode(AdRegMode.INSERT);
-    } else {
-      this.tryTurnMode(AdRegMode.SEARCH);
-    }
     if (this._base.joins) {
       this.initJoins();
     }
@@ -308,12 +301,59 @@ export class AdRegister extends QinColumn {
   private applyPermissions() {
     this.qinpel.talk
       .post("/reg/can", this._base.registry)
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        let permissions: AdRegPermissions = res.data;
+        console.log(permissions);
+        if (!permissions.all) {
+          if (!permissions.insert) {
+            this.restrictInsert();
+          }
+          if (!permissions.select) {
+            this.restrictSelect();
+          }
+          if (!permissions.update) {
+            this.restrictUpdate();
+          }
+          if (!permissions.delete) {
+            this.restrictDelete();
+          }
+        }
+        this.finish();
+      })
+      .catch((err) => this.qinpel.jobbed.showError(err, "{qia_admister}(ErrCode-000016)"));
+  }
+
+  private finish() {
+    this._bar.finish();
+    this._model.clean();
+    if (
+      this._expect.scopes.find((scope) => scope === AdScope.ALL || scope === AdScope.INSERT)
+    ) {
+      this.tryTurnMode(AdRegMode.INSERT);
+    } else {
+      this.tryTurnMode(AdRegMode.SEARCH);
+    }
+    this.reVisible();
+  }
+
+  public restrictInsert() {
+    this._expect.restrictInsert();
+  }
+
+  public restrictSelect() {
+    this._expect.restrictSelect();
+  }
+
+  public restrictUpdate() {
+    this._expect.restrictUpdate();
+  }
+
+  public restrictDelete() {
+    this._expect.restrictDelete();
   }
 
   public hasScope(scope: AdScope): boolean {
-    return this._expect.scopes.find((s) => s == AdScope.ALL || s == scope) !== undefined;
+    return this._expect.hasScope(scope);
   }
 
   public tryTurnInsert(): Promise<AdRegTurningInsert> {
@@ -743,6 +783,14 @@ export class AdRegister extends QinColumn {
     this._table.focus();
   }
 }
+
+export type AdRegPermissions = {
+  all: boolean;
+  insert: boolean;
+  select: boolean;
+  update: boolean;
+  delete: boolean;
+};
 
 export enum AdRegMode {
   INSERT = "INSERT",

@@ -115,22 +115,7 @@ export class AdRegBar extends QinLine {
   }
 
   private initMode() {
-    let canChangeMode = false;
-    if (this._reg.hasScope(AdScope.INSERT)) {
-      this._qinMode.addIcon(this._qinInsert);
-      canChangeMode = true;
-    }
-    if (this._reg.hasScope(AdScope.SEARCH)) {
-      this._qinMode.addIcon(this._qinSearch);
-      canChangeMode = true;
-    }
-    if (this._reg.hasScope(AdScope.NOTICE)) {
-      this._qinMode.addIcon(this._qinNotice);
-      canChangeMode = true;
-    }
-    if (canChangeMode) {
-      this._qinMode.install(this);
-    }
+    this._qinMode.install(this);
     this._qinInsert.addActionMain((_) =>
       this._reg.tryTurnInsert().catch((err) => {
         this._reg.displayError(err, "{qia_admister}(ErrCode-000003)");
@@ -259,6 +244,25 @@ export class AdRegBar extends QinLine {
           }
           break;
       }
+    }
+  }
+
+  public finish() {
+    let canChangeMode = false;
+    if (this._reg.hasScope(AdScope.INSERT)) {
+      this._qinMode.addIcon(this._qinInsert);
+      canChangeMode = true;
+    }
+    if (this._reg.hasScope(AdScope.SEARCH)) {
+      this._qinMode.addIcon(this._qinSearch);
+      canChangeMode = true;
+    }
+    if (this._reg.hasScope(AdScope.NOTICE)) {
+      this._qinMode.addIcon(this._qinNotice);
+      canChangeMode = true;
+    }
+    if (!canChangeMode) {
+      this._qinMode.unInstall();
     }
   }
 }
