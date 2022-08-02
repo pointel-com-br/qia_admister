@@ -201,47 +201,51 @@ export class AdRegister extends QinColumn {
       this.tryTurnMode(AdRegMode.SEARCH);
     }
     if (this._base.joins) {
-      this._base.joins.forEach((join) => {
-        if (join.filters) {
-          let allLinkedFields = new Array<AdField>();
-          let allLinkedWith = new Array<string>();
-          join.filters.forEach((filter) => {
-            if (filter.linked) {
-              let linkedField = this._model.getFieldByName(filter.linked.name);
-              linkedField.addOnChanged((_) => {
-                this.updateJoined(join);
-              });
-              allLinkedFields.push(linkedField);
-              allLinkedWith.push(filter.linked.with);
-            }
-          });
-          if (allLinkedFields.length > 0) {
-            let callRelater = new QinButton({ icon: new QinIcon(QinAsset.FaceSearchLink) });
-            allLinkedFields[allLinkedFields.length - 1].rows.putOn(1, callRelater);
-            callRelater.addActionMain((_) => {
-              let jobber = this.qinpel.chief.newJobber(
-                join.module.title,
-                join.module.appName,
-                AdTools.newAdSetupOption(join.module, [AdScope.RELATE])
-              );
-              jobber.addWaiter((res) => {
-                if (!this.regModeEditable) {
-                  this.qinpel.jobbed.showError(
-                    "You should not receive a related register on a not editable mode.",
-                    "{qia_admister}(ErrCode-000014)"
-                  );
-                  return;
-                }
-                for (let i = 0; i < allLinkedFields.length; i++) {
-                  let linkedValue = res[allLinkedWith[i]];
-                  allLinkedFields[i].value = linkedValue;
-                }
-              });
-            });
-          }
-        }
-      });
+      this.initJoins();
     }
+  }
+
+  private initJoins() {
+    this._base.joins.forEach((join) => {
+      if (join.filters) {
+        let allLinkedFields = new Array<AdField>();
+        let allLinkedWith = new Array<string>();
+        join.filters.forEach((filter) => {
+          if (filter.linked) {
+            let linkedField = this._model.getFieldByName(filter.linked.name);
+            linkedField.addOnChanged((_) => {
+              this.updateJoined(join);
+            });
+            allLinkedFields.push(linkedField);
+            allLinkedWith.push(filter.linked.with);
+          }
+        });
+        if (allLinkedFields.length > 0) {
+          let callRelater = new QinButton({ icon: new QinIcon(QinAsset.FaceSearchLink) });
+          allLinkedFields[allLinkedFields.length - 1].rows.putOn(1, callRelater);
+          callRelater.addActionMain((_) => {
+            let jobber = this.qinpel.chief.newJobber(
+              join.module.title,
+              join.module.appName,
+              AdTools.newAdSetupOption(join.module, [AdScope.RELATE])
+            );
+            jobber.addWaiter((res) => {
+              if (!this.regModeEditable) {
+                this.qinpel.jobbed.showError(
+                  "You should not receive a related register on a not editable mode.",
+                  "{qia_admister}(ErrCode-000014)"
+                );
+                return;
+              }
+              for (let i = 0; i < allLinkedFields.length; i++) {
+                let linkedValue = res[allLinkedWith[i]];
+                allLinkedFields[i].value = linkedValue;
+              }
+            });
+          });
+        }
+      }
+    });
   }
 
   private updateJoined(joined: AdJoined) {
