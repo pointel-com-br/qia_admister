@@ -277,7 +277,7 @@ export class AdRegister extends QinColumn {
         }
       }
     }
-    let select = { registry, fields, joins: null, filters, orders: null, limit: 1 } as AdSelect;
+    let select: AdSelect = { registry, fields, joins: null, filters, orders: null, limit: 1 };
     this.qinpel.talk
       .post("/reg/ask", select)
       .then((res) => {
@@ -325,11 +325,11 @@ export class AdRegister extends QinColumn {
 
   private finish() {
     this._bar.finish();
-    this._model.clean();
     if (
       this._expect.scopes.find((scope) => scope === AdScope.ALL || scope === AdScope.INSERT)
     ) {
       this.tryTurnMode(AdRegMode.INSERT);
+      this._model.clean();
     } else {
       this.tryTurnMode(AdRegMode.SEARCH);
     }
