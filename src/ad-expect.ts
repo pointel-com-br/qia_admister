@@ -26,7 +26,7 @@ export class AdExpect {
 
   private replaceAllScopeWithEachOne() {
     if (this._scopes.findIndex((s) => s == AdScope.ALL) > -1) {
-      let hasRelate = this._scopes.findIndex((s) => s == AdScope.ALL) > -1;
+      let hasRelate = this._scopes.findIndex((s) => s == AdScope.RELATE) > -1;
       this._scopes = [
         AdScope.INSERT,
         AdScope.SEARCH,
