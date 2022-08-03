@@ -24,36 +24,39 @@ export class AdExpect {
     return this._waiters;
   }
 
-  private replaceAllScope() {
+  private replaceAllScopeWithEachOne() {
     if (this._scopes.findIndex((s) => s == AdScope.ALL) > -1) {
+      let hasRelate = this._scopes.findIndex((s) => s == AdScope.ALL) > -1;
       this._scopes = [
         AdScope.INSERT,
         AdScope.SEARCH,
         AdScope.NOTICE,
-        AdScope.RELATE,
         AdScope.MUTATE,
         AdScope.DELETE,
       ];
+      if (hasRelate) {
+        this._scopes.push(AdScope.RELATE);
+      }
     }
   }
 
   public restrictInsert() {
-    this.replaceAllScope();
+    this.replaceAllScopeWithEachOne();
     this._scopes = this._scopes.filter((s) => s != AdScope.INSERT);
   }
 
   public restrictSelect() {
-    this.replaceAllScope();
+    this.replaceAllScopeWithEachOne();
     this._scopes = this._scopes.filter((s) => s != AdScope.SEARCH && s != AdScope.NOTICE);
   }
 
   public restrictUpdate() {
-    this.replaceAllScope();
+    this.replaceAllScopeWithEachOne();
     this._scopes = this._scopes.filter((s) => s != AdScope.MUTATE);
   }
 
   public restrictDelete() {
-    this.replaceAllScope();
+    this.replaceAllScopeWithEachOne();
     this._scopes = this._scopes.filter((s) => s != AdScope.DELETE);
   }
 
