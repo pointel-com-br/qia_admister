@@ -243,6 +243,9 @@ export class AdRegister extends QinColumn {
   }
 
   private updateJoined(joined: AdJoined) {
+    if (!this.regModeEditable) {
+      return;
+    }
     let source = joined.alias ?? joined.registry.alias ?? joined.registry.name;
     let toUpdate: AdField[] = [];
     for (let field of this._model.fields) {
