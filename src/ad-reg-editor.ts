@@ -1,9 +1,10 @@
-import { QinBase, QinColumn, QinLine, QinTabs } from "qin_case";
+import { QinBase, QinColumn, QinLine, QinScroll, QinTabs } from "qin_case";
 import { AdField } from "./ad-field";
 import { AdRegister } from "./ad-register";
 
-export class AdRegEditor extends QinColumn {
+export class AdRegEditor extends QinScroll {
   private _reg: AdRegister;
+  private _body = new QinColumn();
 
   private _tabs: QinTabs = null;
   private _column: QinColumn = null;
@@ -14,12 +15,14 @@ export class AdRegEditor extends QinColumn {
   public constructor(register: AdRegister) {
     super();
     this._reg = register;
+    this._body.install(this);
+    this._body.styled({ display: "block" });
   }
 
   public addTab(title: string) {
     if (this._tabs == null) {
       this._tabs = new QinTabs();
-      this._tabs.install(this);
+      this._tabs.install(this._body);
       this._tabs.style.putAsMarginTop(3);
     }
     this._column = new QinColumn();
@@ -31,7 +34,7 @@ export class AdRegEditor extends QinColumn {
   public addLine() {
     if (this._column == null) {
       this._column = new QinColumn();
-      this._column.install(this);
+      this._column.install(this._body);
     }
     this._line = new QinLine();
     this._line.install(this._column);
@@ -47,7 +50,7 @@ export class AdRegEditor extends QinColumn {
   public addAct(kindred: QinBase) {
     if (this._acts == null) {
       this._acts = new QinLine();
-      this._acts.install(this);
+      this._acts.install(this._body);
     }
     kindred.install(this._acts);
   }
