@@ -306,7 +306,6 @@ export class AdRegister extends QinColumn {
       .post("/reg/can", this._base.registry)
       .then((res) => {
         let permissions: AdRegPermissions = res.data;
-        console.log(permissions);
         if (!permissions.all) {
           if (!permissions.insert) {
             this.restrictInsert();
