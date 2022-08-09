@@ -18,9 +18,14 @@ export class AdRegSearch extends QinScroll {
   private _lines = new QinColumn();
   private _clauses = new Array<SearchClause>();
 
+  public idSelected: string;
+  public lastSelected: string;
+
   public constructor(register: AdRegister) {
     super();
     this._reg = register;
+    this.idSelected = register.getIdentifier() + "-LastSearchSelected";
+    this.lastSelected = this.qinpel.chief.loadConfig(this.idSelected);
     this._lines.install(this);
     const first = new SearchClause(this);
     this._clauses.push(first);
@@ -33,18 +38,27 @@ export class AdRegSearch extends QinScroll {
 
   public addField(field: AdField) {
     this._clauses.forEach((clause) => {
-      clause.addField({ title: field.title, value: field.name });
+      clause.addField({
+        title: field.title,
+        value: field.name,
+        selected: field.name === this.lastSelected,
+      });
     });
   }
 
   public addClause(after: SearchClause) {
     const clause = new SearchClause(this);
     this._reg.model.fields.forEach((field) => {
-      clause.addField({ title: field.title, value: field.name });
+      clause.addField({
+        title: field.title,
+        value: field.name,
+        selected: field.name === this.lastSelected,
+      });
     });
     const index = this._clauses.indexOf(after);
     this._clauses.splice(index + 1, 0, clause);
     this.rebuild();
+    clause.focus();
   }
 
   public delClause(clause: SearchClause) {
@@ -103,13 +117,19 @@ class SearchClause extends QinLine {
     super();
     this._dad = dad;
     this._qinSame.install(this);
-    this._qinField.addItem({ title: "", value: "" });
     this._qinField.install(this);
     this._qinLikes.install(this);
     this._qinValue.install(this);
     this._qinTies.install(this);
     this._qinAdd.install(this);
     this._qinDel.install(this);
+    this._qinField.addItem({ title: "", value: "" });
+    this._qinField.addOnChanged((result) => {
+      if (this._dad.lastSelected !== result) {
+        this._dad.lastSelected = result;
+        this.qinpel.chief.saveConfig(this._dad.idSelected, result);
+      }
+    });
     this._qinAdd.addActionMain((_) => {
       this._dad.addClause(this);
     });
@@ -151,6 +171,14 @@ class SearchClause extends QinLine {
       },
       ties: this._qinTies.value as AdFilterTies,
     };
+  }
+
+  public focus() {
+    if (!this._qinField.value) {
+      this._qinField.focus();
+    } else {
+      this._qinValue.focus();
+    }
   }
 }
 
