@@ -136,6 +136,24 @@ export class AdRegister extends QinColumn {
     return this._loader;
   }
 
+  public getIdentifier() {
+    return (
+      this._module.appName +
+      "," +
+      this._module.title +
+      "," +
+      this._base.registry.base +
+      "," +
+      this._base.registry.catalog +
+      "," +
+      this._base.registry.schema +
+      "," +
+      this._base.registry.name +
+      "," +
+      this._base.registry.alias
+    );
+  }
+
   public addTab(title: string) {
     this._editor.addTab(title);
   }
