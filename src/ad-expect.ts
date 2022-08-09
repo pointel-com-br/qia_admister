@@ -5,7 +5,7 @@ import { AdScope } from "./ad-tools";
 export class AdExpect {
   private _scopes: AdScope[];
   private _filters: AdFilter[];
-  private _waiters: QinWaiters;
+  private _waiters: QinWaiters<any>;
 
   public constructor(options: AdExpectSet) {
     this._scopes = options.scopes;
@@ -20,7 +20,7 @@ export class AdExpect {
     return this._filters;
   }
 
-  public get waiters(): QinWaiters {
+  public get waiters(): QinWaiters<any> {
     return this._waiters;
   }
 

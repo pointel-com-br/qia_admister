@@ -149,7 +149,7 @@ export class AdField {
     this._edit.isEditable();
   }
 
-  public addOnChanged(waiter: QinWaiter) {
+  public addOnChanged(waiter: QinWaiter<any>) {
     this._edit.addOnChanged(waiter);
   }
 
