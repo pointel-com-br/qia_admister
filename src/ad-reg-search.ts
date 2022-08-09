@@ -24,7 +24,7 @@ export class AdRegSearch extends QinScroll {
   public constructor(register: AdRegister) {
     super();
     this._reg = register;
-    this.idSelected = register.getIdentifier() + "-LastSearchSelected";
+    this.idSelected = register.identifier + "-LastSearchSelected";
     this.lastSelected = this.qinpel.chief.loadConfig(this.idSelected);
     this._lines.install(this);
     const first = new SearchClause(this);

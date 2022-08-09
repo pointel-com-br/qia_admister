@@ -29,6 +29,7 @@ export class AdRegister extends QinColumn {
   private _expect: AdExpect;
   private _base: AdRegBase;
   private _model: AdRegModel;
+  private _identifier: string;
 
   private _body: QinStack;
   private _viewSingle: QinStack;
@@ -54,27 +55,40 @@ export class AdRegister extends QinColumn {
     this._module = module;
     this._expect = expect;
     this._base = base;
+    this._identifier =
+      module.appName +
+      "," +
+      module.title +
+      "," +
+      base.registry.base +
+      "," +
+      base.registry.catalog +
+      "," +
+      base.registry.schema +
+      "," +
+      base.registry.name +
+      "," +
+      base.registry.alias;
     this._model = new AdRegModel(this);
-
     this._body = new QinStack();
     this._viewSingle = new QinStack();
     this._viewVertical = new QinSplitter({ horizontal: false });
     this._viewHorizontal = new QinSplitter({ horizontal: true });
-
     this._bar = new AdRegBar(this);
     this._editor = new AdRegEditor(this);
     this._search = new AdRegSearch(this);
     this._table = new AdRegTable(this);
-
     this._loader = new AdRegLoader(this);
+    this.initInterface();
+  }
 
+  private initInterface() {
     this._viewSingle.style.putAsFlexMax();
     this._viewVertical.style.putAsFlexMax();
     this._viewHorizontal.style.putAsFlexMax();
     this._bar.install(this);
     this._body.stack(this._editor);
     this._body.stack(this._search);
-    this.viewVertical();
     this._body.style.putAsFlexMax();
     this._editor.style.putAsFlexMax();
     this._search.style.putAsFlexMax();
@@ -102,6 +116,10 @@ export class AdRegister extends QinColumn {
 
   public get model(): AdRegModel {
     return this._model;
+  }
+
+  public get identifier() {
+    return this._identifier;
   }
 
   public get regMode(): AdRegMode {
@@ -134,24 +152,6 @@ export class AdRegister extends QinColumn {
 
   public get loader(): AdRegLoader {
     return this._loader;
-  }
-
-  public getIdentifier() {
-    return (
-      this._module.appName +
-      "," +
-      this._module.title +
-      "," +
-      this._base.registry.base +
-      "," +
-      this._base.registry.catalog +
-      "," +
-      this._base.registry.schema +
-      "," +
-      this._base.registry.name +
-      "," +
-      this._base.registry.alias
-    );
   }
 
   public addTab(title: string) {
@@ -880,3 +880,11 @@ export type AdRegListener = {
   onTry?: AdRegTryCaller;
   onDid?: AdRegDidCaller;
 };
+
+export enum AdRegParams {
+  VIEW_SELECTED = "VIEW_SELECTED",
+  VIEW_VERTICAL_SIDE_A = "VIEW_VERTICAL_SIDE_A",
+  VIEW_VERTICAL_SIDE_B = "VIEW_VERTICAL_SIDE_B",
+  VIEW_HORIZONTAL_SIDE_A = "VIEW_HORIZONTAL_SIDE_A",
+  VIEW_HORIZONTAL_SIDE_B = "VIEW_HORIZONTAL_SIDE_B",
+}
