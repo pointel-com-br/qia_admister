@@ -96,6 +96,71 @@ export class AdRegister extends QinColumn {
     this._bar.tabIndex = 0;
     this._body.tabIndex = 1;
     this._table.tabIndex = 2;
+    this.initViewSchema();
+  }
+
+  private initViewSchema() {
+    let sideA = parseInt(
+      this.qinpel.chief.loadConfig(
+        this._identifier + "-" + AdRegParams.VIEW_VERTICAL_SIDE_A,
+        "50"
+      )
+    );
+    let sideB = parseInt(
+      this.qinpel.chief.loadConfig(
+        this._identifier + "-" + AdRegParams.VIEW_VERTICAL_SIDE_B,
+        "50"
+      )
+    );
+    this._viewVertical.setBalance({ sideA, sideB });
+    sideA = parseInt(
+      this.qinpel.chief.loadConfig(
+        this._identifier + "-" + AdRegParams.VIEW_HORIZONTAL_SIDE_A,
+        "50"
+      )
+    );
+    sideB = parseInt(
+      this.qinpel.chief.loadConfig(
+        this._identifier + "-" + AdRegParams.VIEW_HORIZONTAL_SIDE_B,
+        "50"
+      )
+    );
+    this._viewHorizontal.setBalance({ sideA, sideB });
+    let selectedView = this.qinpel.chief.loadConfig(
+      this._identifier + "-" + AdRegParams.VIEW_SELECTED,
+      AdRegParams.VIEW_SELECTED_VERTICAL
+    );
+    if (selectedView === AdRegParams.VIEW_SELECTED_SINGLE) {
+      this.viewSingle();
+    } else if (selectedView === AdRegParams.VIEW_SELECTED_HORIZONTAL) {
+      this.viewHorizontal();
+    } else {
+      this.viewVertical();
+    }
+    this.initSaveBalances();
+  }
+
+  private initSaveBalances() {
+    this._viewVertical.addOnChanged((balance) => {
+      this.qinpel.chief.saveConfig(
+        this._identifier + "-" + AdRegParams.VIEW_VERTICAL_SIDE_A,
+        balance.sideA.toString()
+      );
+      this.qinpel.chief.saveConfig(
+        this._identifier + "-" + AdRegParams.VIEW_VERTICAL_SIDE_B,
+        balance.sideB.toString()
+      );
+    });
+    this._viewHorizontal.addOnChanged((balance) => {
+      this.qinpel.chief.saveConfig(
+        this._identifier + "-" + AdRegParams.VIEW_HORIZONTAL_SIDE_A,
+        balance.sideA.toString()
+      );
+      this.qinpel.chief.saveConfig(
+        this._identifier + "-" + AdRegParams.VIEW_HORIZONTAL_SIDE_B,
+        balance.sideB.toString()
+      );
+    });
   }
 
   public get module(): AdModule {
@@ -722,6 +787,10 @@ export class AdRegister extends QinColumn {
     }
     this._regView = AdRegView.SINGLE;
     this.callDidListeners(AdRegTurn.TURN_VIEW, { newValue: this._regView });
+    this.qinpel.chief.saveConfig(
+      this._identifier + "-" + AdRegParams.VIEW_SELECTED,
+      AdRegParams.VIEW_SELECTED_SINGLE
+    );
   }
 
   public viewVertical() {
@@ -734,6 +803,10 @@ export class AdRegister extends QinColumn {
     this._table.reDisplay();
     this._regView = AdRegView.VERTICAL;
     this.callDidListeners(AdRegTurn.TURN_VIEW, { newValue: this._regView });
+    this.qinpel.chief.saveConfig(
+      this._identifier + "-" + AdRegParams.VIEW_SELECTED,
+      AdRegParams.VIEW_SELECTED_VERTICAL
+    );
   }
 
   public viewHorizontal() {
@@ -746,6 +819,10 @@ export class AdRegister extends QinColumn {
     this._table.reDisplay();
     this._regView = AdRegView.HORIZONTAL;
     this.callDidListeners(AdRegTurn.TURN_VIEW, { newValue: this._regView });
+    this.qinpel.chief.saveConfig(
+      this._identifier + "-" + AdRegParams.VIEW_SELECTED,
+      AdRegParams.VIEW_SELECTED_HORIZONTAL
+    );
   }
 
   public addListener(listener: AdRegListener) {
@@ -883,6 +960,9 @@ export type AdRegListener = {
 
 export enum AdRegParams {
   VIEW_SELECTED = "VIEW_SELECTED",
+  VIEW_SELECTED_SINGLE = "VIEW_SELECTED_SINGLE",
+  VIEW_SELECTED_VERTICAL = "VIEW_SELECTED_VERTICAL",
+  VIEW_SELECTED_HORIZONTAL = "VIEW_SELECTED_HORIZONTAL",
   VIEW_VERTICAL_SIDE_A = "VIEW_VERTICAL_SIDE_A",
   VIEW_VERTICAL_SIDE_B = "VIEW_VERTICAL_SIDE_B",
   VIEW_HORIZONTAL_SIDE_A = "VIEW_HORIZONTAL_SIDE_A",

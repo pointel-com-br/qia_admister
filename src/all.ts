@@ -29,6 +29,7 @@ export { AdRegListener } from "./ad-register";
 export { AdRegLoader } from "./ad-reg-loader";
 export { AdRegMode } from "./ad-register";
 export { AdRegModel } from "./ad-reg-model";
+export { AdRegParams } from "./ad-register";
 export { AdRegPermissions } from "./ad-register";
 export { AdRegSearch } from "./ad-reg-search";
 export { AdRegTable } from "./ad-reg-table";
