@@ -173,7 +173,7 @@ class SearchCondition extends QinCombo {
     this.addItem({ title: "<=", value: AdFilterLikes.LESSER_EQUALS });
     this.addItem({ title: "$_", value: AdFilterLikes.STARTS_WITH });
     this.addItem({ title: "_$", value: AdFilterLikes.ENDS_WITH });
-    this.addItem({ title: "_$_", value: AdFilterLikes.CONTAINS });
+    this.addItem({ title: "_$_", value: AdFilterLikes.CONTAINS, selected: true });
     this.style.putAsMaxWidth(64);
   }
 }
