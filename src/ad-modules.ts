@@ -47,6 +47,11 @@ export class AdModules {
     title: "SubGrupos de Pessoas",
     icon: QinAsset.FacePeopleSubgroup,
   };
+  static CLIENTS: AdModule = {
+    appName: "adsales",
+    title: "Clientes",
+    icon: QinAsset.FaceCostumer,
+  };
   static PRODUCTS: AdModule = {
     appName: "adsales",
     title: "Produtos",
