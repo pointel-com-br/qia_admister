@@ -1,10 +1,10 @@
 import { AdFilter } from "./ad-filter";
 import { AdJoined } from "./ad-joined";
 import { AdOrder } from "./ad-order";
-import { AdRegistry } from "./ad-registry";
+import { AdRegistier } from "./ad-registier";
 
-export class AdRegBase {
-  registry: AdRegistry;
+export class AdRegBased {
+  registier: AdRegistier;
   joins?: AdJoined[];
   filters?: AdFilter[];
   orders?: AdOrder[];

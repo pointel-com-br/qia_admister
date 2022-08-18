@@ -13,15 +13,15 @@ export class AdRegLoader {
 
   public load(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      let registry = this._reg.registry;
+      let registier = this._reg.registier;
       let fields = this._reg.model.typeds;
-      let joins = this._reg.base.joins;
+      let joins = this._reg.based.joins;
       let filters: AdFilter[] = null;
-      if (this._reg.base.filters) {
+      if (this._reg.based.filters) {
         if (filters == null) {
           filters = [];
         }
-        filters.push(...this._reg.base.filters);
+        filters.push(...this._reg.based.filters);
       }
       if (this._reg.expect.filters) {
         if (filters == null) {
@@ -36,8 +36,8 @@ export class AdRegLoader {
         }
         filters.push(...searchingFor);
       }
-      let orders = this._reg.base.orders;
-      let select = { registry, fields, joins, filters, orders, limit: 300 } as AdSelect;
+      let orders = this._reg.based.orders;
+      let select = { registier, fields, joins, filters, orders, limit: 300 } as AdSelect;
       QinTool.qinpel.talk
         .post("/reg/ask", select)
         .then((res) => {

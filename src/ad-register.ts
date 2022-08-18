@@ -13,13 +13,13 @@ import { AdField } from "./ad-field";
 import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filter";
 import { AdJoined } from "./ad-joined";
 import { AdRegBar } from "./ad-reg-bar";
-import { AdRegBase } from "./ad-reg-base";
+import { AdRegBased } from "./ad-reg-based";
 import { AdRegEditor } from "./ad-reg-editor";
 import { AdRegLoader } from "./ad-reg-loader";
 import { AdRegModel } from "./ad-reg-model";
 import { AdRegSearch } from "./ad-reg-search";
 import { AdRegTable } from "./ad-reg-table";
-import { AdRegistry } from "./ad-registry";
+import { AdRegistier } from "./ad-registier";
 import { AdSelect } from "./ad-select";
 import { AdModule, AdScope, AdSetup, AdTools } from "./ad-tools";
 import { AdTyped } from "./ad-typed";
@@ -27,7 +27,7 @@ import { AdTyped } from "./ad-typed";
 export class AdRegister extends QinColumn {
   private _module: AdModule;
   private _expect: AdExpect;
-  private _base: AdRegBase;
+  private _based: AdRegBased;
   private _model: AdRegModel;
   private _identifier: string;
 
@@ -49,26 +49,26 @@ export class AdRegister extends QinColumn {
   private _selectedValues: string[] = null;
   private _listener = new Array<AdRegListener>();
 
-  public constructor(module: AdModule, expect: AdExpect, base: AdRegBase) {
+  public constructor(module: AdModule, expect: AdExpect, based: AdRegBased) {
     super();
     this.unVisible();
     this._module = module;
     this._expect = expect;
-    this._base = base;
+    this._based = based;
     this._identifier =
       module.appName +
       "," +
       module.title +
       "," +
-      base.registry.base +
+      based.registier.base +
       "," +
-      base.registry.catalog +
+      based.registier.registry.catalog +
       "," +
-      base.registry.schema +
+      based.registier.registry.schema +
       "," +
-      base.registry.name +
+      based.registier.registry.name +
       "," +
-      base.registry.alias;
+      based.registier.registry.alias;
     this._model = new AdRegModel(this);
     this._body = new QinStack();
     this._viewSingle = new QinStack();
@@ -167,12 +167,12 @@ export class AdRegister extends QinColumn {
     return this._module;
   }
 
-  public get base(): AdRegBase {
-    return this._base;
+  public get based(): AdRegBased {
+    return this._based;
   }
 
-  public get registry(): AdRegistry {
-    return this._base.registry;
+  public get registier(): AdRegistier {
+    return this._based.registier;
   }
 
   public get expect(): AdExpect {
@@ -276,14 +276,14 @@ export class AdRegister extends QinColumn {
   }
 
   public prepare() {
-    if (this._base.joins) {
+    if (this._based.joins) {
       this.initJoins();
     }
     this.applyPermissions();
   }
 
   private initJoins() {
-    this._base.joins.forEach((join) => {
+    this._based.joins.forEach((join) => {
       if (join.filters) {
         let allLinkedFields = new Array<AdField>();
         let allLinkedWith = new Array<string>();
@@ -338,6 +338,10 @@ export class AdRegister extends QinColumn {
     }
     if (toUpdate.length == 0) return;
     let registry = joined.alias ? { ...joined.registry, alias: joined.alias } : joined.registry;
+    let registier: AdRegistier = {
+      base: this.based.registier.base,
+      registry,
+    };
     let fields: AdTyped[] = [];
     for (let field of toUpdate) {
       fields.push(field.typed);
@@ -363,7 +367,7 @@ export class AdRegister extends QinColumn {
         }
       }
     }
-    let select: AdSelect = { registry, fields, joins: null, filters, orders: null, limit: 1 };
+    let select: AdSelect = { registier, fields, joins: null, filters, orders: null, limit: 1 };
     this.qinpel.talk
       .post("/reg/ask", select)
       .then((res) => {
@@ -386,7 +390,7 @@ export class AdRegister extends QinColumn {
 
   private applyPermissions() {
     this.qinpel.talk
-      .post("/reg/can", this._base.registry)
+      .post("/reg/can", this.registier)
       .then((res) => {
         let permissions: AdRegPermissions = res.data;
         if (!permissions.all) {

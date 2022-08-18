@@ -1,7 +1,7 @@
-import { AdRegistry } from "./ad-registry";
+import { AdRegistier } from "./ad-registier";
 import { AdValued } from "./ad-valued";
 
 export type AdInsert = {
-  registry: AdRegistry;
+  registier: AdRegistier;
   valueds: AdValued[];
 };

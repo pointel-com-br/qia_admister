@@ -100,7 +100,7 @@ export class AdRegModel {
         valueds.push(field.valued);
       }
       let inserting = {
-        registry: this._reg.registry,
+        registier: this._reg.registier,
         valueds: valueds,
       } as AdInsert;
       this._reg.qinpel.chief.talk
@@ -121,7 +121,7 @@ export class AdRegModel {
         valueds.push(field.valued);
       }
       let updating = {
-        registry: this._reg.registry,
+        registier: this._reg.registier,
         valueds: this.getMutationValueds(),
         filters: this.getKeyFieldsFilter(),
         limit: 1,
@@ -143,7 +143,7 @@ export class AdRegModel {
   public async delete(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       let deleting = {
-        registry: this._reg.registry,
+        registier: this._reg.registier,
         filters: this.getKeyFieldsFilter(),
         limit: 1,
       } as AdDelete;
