@@ -329,7 +329,7 @@ export class AdRegister extends QinColumn {
     if (!this.regModeEditable) {
       return;
     }
-    let source = joined.alias ?? joined.registry.alias ?? joined.registry.name;
+    let source = joined.alias ?? joined.module.registry?.alias ?? joined.module.registry?.name;
     let toUpdate: AdField[] = [];
     for (let field of this._model.fields) {
       if (field.source === source) {
@@ -337,7 +337,17 @@ export class AdRegister extends QinColumn {
       }
     }
     if (toUpdate.length == 0) return;
-    let registry = joined.alias ? { ...joined.registry, alias: joined.alias } : joined.registry;
+    let registry = {
+      name: "",
+    };
+    if (joined.registry) {
+      Object.assign(registry, joined.registry);
+    } else {
+      Object.assign(registry, joined.module.registry);
+    }
+    if (joined.alias) {
+      registry["alias"] = joined.alias;
+    }
     let registier: AdRegistier = {
       base: this.based.registier.base,
       registry,
