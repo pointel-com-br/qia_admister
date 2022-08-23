@@ -16,6 +16,13 @@ export class AdRegLoader {
       let registier = this._reg.registier;
       let fields = this._reg.model.typeds;
       let joins = this._reg.based.joins;
+      if (joins) {
+        for (let join of joins) {
+          if (!join.registry) {
+            join.registry = join.module.registry;
+          }
+        }
+      }
       let filters: AdFilter[] = null;
       if (this._reg.based.filters) {
         if (filters == null) {
