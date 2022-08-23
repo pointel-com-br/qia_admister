@@ -4,10 +4,10 @@ import { AdModule } from "./ad-tools";
 
 export type AdJoined = {
   module: AdModule;
-  ties?: AdJoinedTies;
-  registry: AdRegistry;
+  registry?: AdRegistry;
   alias?: string;
   filters?: AdFilter[];
+  ties?: AdJoinedTies;
 };
 
 export enum AdJoinedTies {
