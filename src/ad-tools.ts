@@ -9,6 +9,7 @@ import {
 import { AdField } from "./ad-field";
 import { AdFilter } from "./ad-filter";
 import { AdNames } from "./ad-names";
+import { AdRegistry } from "./ad-registry";
 
 export type AdSetup = {
   module: AdModule;
@@ -30,6 +31,7 @@ export type AdModule = {
   appName: string;
   title: string;
   icon: QinAsset;
+  registry?: AdRegistry;
 };
 
 function isSameModule(one: AdModule, two: AdModule): boolean {
