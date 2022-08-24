@@ -54,7 +54,7 @@ function newAdSetupOption(module: AdModule, scopes: AdScope[], filters?: AdFilte
 
 function newAdFieldInteger(name: string, title: string): AdField {
   return new AdField({
-    key: true,
+    key: false,
     name: name,
     title: title,
     kind: QinMutants.INTEGER,
@@ -63,7 +63,7 @@ function newAdFieldInteger(name: string, title: string): AdField {
 
 function newAdFieldNumeric(name: string, title: string): AdField {
   return new AdField({
-    key: true,
+    key: false,
     name: name,
     title: title,
     kind: QinMutants.NUMERIC,
@@ -72,7 +72,7 @@ function newAdFieldNumeric(name: string, title: string): AdField {
 
 function newAdFieldString(name: string, title: string, maxLength: number): AdField {
   return new AdField({
-    key: true,
+    key: false,
     name: name,
     title: title,
     kind: QinMutants.STRING,
@@ -89,6 +89,7 @@ function newAdFieldSuggestion(
   items: string[]
 ): AdField {
   return new AdField({
+    key: false,
     name: name,
     title: title,
     kind: QinMutants.SUGGESTION,
@@ -101,7 +102,7 @@ function newAdFieldSuggestion(
 
 function newAdFieldDate(name: string, title: string): AdField {
   return new AdField({
-    key: true,
+    key: false,
     name: name,
     title: title,
     kind: QinMutants.DATE,
@@ -110,6 +111,7 @@ function newAdFieldDate(name: string, title: string): AdField {
 
 function newAdFieldCombo(name: string, title: string, items: QinComboItem[]): AdField {
   return new AdField({
+    key: false,
     name: name,
     title: title,
     kind: QinMutants.COMBO,

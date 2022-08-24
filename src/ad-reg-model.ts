@@ -124,7 +124,6 @@ export class AdRegModel {
         registier: this._reg.registier,
         valueds: this.getMutationValueds(),
         filters: this.getKeyFieldsFilter(),
-        limit: 1,
       } as AdUpdate;
       this._reg.qinpel.chief.talk
         .post("/reg/set", updating)
@@ -160,12 +159,9 @@ export class AdRegModel {
   }
 
   private getMutationValueds(): AdValued[] {
-    let result: AdValued[] = [];
+    let result = [];
     for (let field of this._fields) {
       if (field.hasMutations() && !field.key) {
-        if (result == null) {
-          result = [];
-        }
         result.push(field.valued);
       }
     }

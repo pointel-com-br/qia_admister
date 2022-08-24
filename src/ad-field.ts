@@ -122,7 +122,7 @@ export class AdField {
   public hasMutations(): boolean {
     let early = this._value;
     let byNow = this.value;
-    return early != byNow;
+    return early !== byNow;
   }
 
   public undoMutations() {
