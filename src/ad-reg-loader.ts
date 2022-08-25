@@ -1,6 +1,7 @@
 import { QinTool } from "qin_case";
 import { AdApprise } from "./ad-apprise";
 import { AdFilter } from "./ad-filter";
+import { AdJoinedTies } from "./ad-joined";
 import { AdRegister } from "./ad-register";
 import { AdSelect } from "./ad-select";
 
@@ -20,6 +21,9 @@ export class AdRegLoader {
         for (let join of joins) {
           if (!join.registry) {
             join.registry = join.module.registry;
+          }
+          if (!join.ties) {
+            join.ties = AdJoinedTies.LEFT;
           }
         }
       }
@@ -45,6 +49,7 @@ export class AdRegLoader {
       }
       let orders = this._reg.based.orders;
       let select = { registier, fields, joins, filters, orders, limit: 300 } as AdSelect;
+      console.log(select);
       QinTool.qinpel.talk
         .post("/reg/ask", select)
         .then((res) => {

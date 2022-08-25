@@ -11,9 +11,9 @@ export type AdJoined = {
 };
 
 export enum AdJoinedTies {
-  INNER,
-  LEFT,
-  RIGHT,
-  FULL,
-  CROSS,
+  INNER = "INNER",
+  LEFT = "LEFT",
+  RIGHT = "RIGHT",
+  FULL = "FULL",
+  CROSS = "CROSS",
 }
