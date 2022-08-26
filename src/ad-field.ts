@@ -121,8 +121,14 @@ export class AdField {
 
   public hasMutations(): boolean {
     let early = this._value;
+    if (early === "") {
+      early = null;
+    }
     let byNow = this.value;
-    return early !== byNow;
+    if (byNow === "") {
+      byNow = null;
+    }
+    return early != byNow;
   }
 
   public undoMutations() {
