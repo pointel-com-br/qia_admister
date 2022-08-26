@@ -49,7 +49,6 @@ export class AdRegLoader {
       }
       let orders = this._reg.based.orders;
       let select = { registier, fields, joins, filters, orders, limit: 300 } as AdSelect;
-      console.log(select);
       QinTool.qinpel.talk
         .post("/reg/ask", select)
         .then((res) => {
