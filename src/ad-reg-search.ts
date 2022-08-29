@@ -161,6 +161,9 @@ class SearchClause extends QinLine {
     if (!field) {
       return null;
     }
+    if (!field.hasValue()) {
+      return null;
+    }
     return {
       seems: this._qinSame.value as AdFilterSeems,
       likes: this._qinLikes.value as AdFilterLikes,

@@ -131,6 +131,10 @@ export class AdField {
     return early != byNow;
   }
 
+  public hasValue(): boolean {
+    return !!this.value;
+  }
+
   public undoMutations() {
     this._edit.value = this._value;
   }
