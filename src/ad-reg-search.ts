@@ -161,7 +161,7 @@ class SearchClause extends QinLine {
     if (!field) {
       return null;
     }
-    if (!field.hasValue()) {
+    if (!this._qinValue.value) {
       return null;
     }
     return {
