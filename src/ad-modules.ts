@@ -92,4 +92,10 @@ export class AdModules {
     icon: QinAsset.FaceCheckbook,
     registry: { name: "condicoes_pagamento" },
   };
+  static SALES: AdModule = {
+    appName: "adsales",
+    title: "Vendas",
+    icon: QinAsset.FaceSales,
+    registry: { name: "prepedidos" },
+  };
 }
