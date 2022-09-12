@@ -115,6 +115,10 @@ export class AdField {
     return this;
   }
 
+  public putDataSource(dataSource: string) {
+    this._name = dataSource + "." + dataSource;
+  }
+
   public install(on: QinBase) {
     this._rows.install(on);
   }
