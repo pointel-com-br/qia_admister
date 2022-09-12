@@ -102,7 +102,7 @@ export class AdField {
     this._value = data;
   }
 
-  public get source(): string {
+  public get fieldSource(): string {
     let dotPos = this._name.indexOf(".");
     if (dotPos < 0) {
       return "";

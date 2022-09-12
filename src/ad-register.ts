@@ -219,6 +219,10 @@ export class AdRegister extends QinColumn {
     return this._loader;
   }
 
+  public get dataSource(): string {
+    return this._based.registier.registry.alias ?? this._based.registier.registry.name;
+  }
+
   public addTab(title: string) {
     this._editor.addTab(title);
   }
@@ -228,6 +232,9 @@ export class AdRegister extends QinColumn {
   }
 
   public addField(field: AdField) {
+    if (field.name.indexOf(".") == -1) {
+      // field.name = this.dataSource + "." + field.name;
+    }
     this._model.addField(field);
     this._editor.addField(field);
     this._search.addField(field);
@@ -332,7 +339,7 @@ export class AdRegister extends QinColumn {
     let source = joined.alias ?? joined.module.registry?.alias ?? joined.module.registry?.name;
     let toUpdate: AdField[] = [];
     for (let field of this._model.fields) {
-      if (field.source === source) {
+      if (field.fieldSource === source) {
         toUpdate.push(field);
       }
     }
