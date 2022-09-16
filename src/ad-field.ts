@@ -11,6 +11,8 @@ export class AdField {
   private _kind: QinMutants;
   private _options: any;
 
+  private _readOnly: boolean;
+
   private _rows: QinRows;
   private _label: QinLabel;
   private _edit: QinEdit<any> = null;
@@ -25,6 +27,7 @@ export class AdField {
     this._alias = newer.alias;
     this._kind = newer.kind;
     this._options = newer.options;
+    this._readOnly = newer.readOnly ?? false;
     this.init();
   }
 
@@ -64,6 +67,10 @@ export class AdField {
 
   public get options(): any {
     return this._options;
+  }
+
+  public get readOnly(): boolean {
+    return this._readOnly;
   }
 
   public get rows(): QinRows {
@@ -115,8 +122,14 @@ export class AdField {
     return this;
   }
 
-  public putDataSource(dataSource: string) {
-    this._name = dataSource + "." + dataSource;
+  public putDataSource(dataSource: string): AdField {
+    this._name = dataSource + "." + this._name;
+    return this;
+  }
+
+  public putReadOnly(): AdField {
+    this._readOnly = true;
+    return this;
   }
 
   public install(on: QinBase) {
@@ -179,4 +192,5 @@ export type AdFieldSet = {
   alias?: string;
   kind: QinMutants;
   options?: any;
+  readOnly?: boolean;
 };
