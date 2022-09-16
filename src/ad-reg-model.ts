@@ -70,7 +70,9 @@ export class AdRegModel {
 
   public turnEditable() {
     for (let field of this._fields) {
-      field.turnEditable();
+      if (!field.readOnly) {
+        field.turnEditable();
+      }
     }
   }
 
