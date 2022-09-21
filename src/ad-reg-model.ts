@@ -100,12 +100,18 @@ export class AdRegModel {
   public async insert(): Promise<AdValued[]> {
     return new Promise<AdValued[]>((resolve, reject) => {
       let valueds = new Array<AdValued>();
+      let toGetID = new Array<string>();
       for (let field of this._fields) {
-        valueds.push(field.valued);
+        let valued = field.valued;
+        valueds.push(valued);
+        if (field.key && !valued.data) {
+          toGetID.push(field.name);
+        }
       }
       let inserting = {
         registier: this._reg.registier,
-        valueds: valueds,
+        valueds,
+        toGetID,
       } as AdInsert;
       this._reg.qinpel.chief.talk
         .post("/reg/new", inserting)
