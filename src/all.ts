@@ -51,6 +51,7 @@ export { AdRegistry } from "./ad-registry";
 export { AdScope } from "./ad-tools";
 export { AdSelect } from "./ad-select";
 export { AdSetup } from "./ad-tools";
+export { AdToGetID } from "./ad-to-get-id";
 export { AdTools } from "./ad-tools";
 export { AdTyped } from "./ad-typed";
 export { AdUpdate } from "./ad-update";

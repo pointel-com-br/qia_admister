@@ -3,6 +3,7 @@ import { AdField } from "./ad-field";
 import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filter";
 import { AdInsert } from "./ad-insert";
 import { AdRegister } from "./ad-register";
+import { AdToGetID } from "./ad-to-get-id";
 import { AdTyped } from "./ad-typed";
 import { AdUpdate } from "./ad-update";
 import { AdValued } from "./ad-valued";
@@ -100,12 +101,16 @@ export class AdRegModel {
   public async insert(): Promise<AdValued[]> {
     return new Promise<AdValued[]>((resolve, reject) => {
       let valueds = new Array<AdValued>();
-      let toGetID = new Array<string>();
+      let toGetID: AdToGetID = {};
       for (let field of this._fields) {
         let valued = field.valued;
         valueds.push(valued);
-        if (field.key && !valued.data) {
-          toGetID.push(field.name);
+        if (field.key) {
+          if (!valued.data) {
+            toGetID.name = field.name;
+          } else {
+            toGetID.filter = valued;
+          }
         }
       }
       let inserting = {
@@ -115,7 +120,15 @@ export class AdRegModel {
       } as AdInsert;
       this._reg.qinpel.chief.talk
         .post("/reg/new", inserting)
-        .then((_) => {
+        .then((res) => {
+          if (toGetID && toGetID.name) {
+            for (let valued of valueds) {
+              if (valued.name === toGetID.name) {
+                valued.data = res.data;
+                break;
+              }
+            }
+          }
           resolve(valueds);
         })
         .catch((err) => {
