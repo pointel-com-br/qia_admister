@@ -93,6 +93,9 @@ export class AdField {
     let name = this._name;
     let type = this._edit.getNature();
     let data = this._edit.value;
+    if (data === "") {
+      data = null;
+    }
     return { name, type, data };
   }
 

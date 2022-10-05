@@ -101,17 +101,21 @@ export class AdRegModel {
   public async insert(): Promise<AdValued[]> {
     return new Promise<AdValued[]>((resolve, reject) => {
       let valueds = new Array<AdValued>();
+      let results = new Array<AdValued>();
       let toGetID: AdToGetID = {};
       for (let field of this._fields) {
         let valued = field.valued;
-        valueds.push(valued);
-        if (field.key) {
-          if (!valued.data) {
-            toGetID.name = field.name;
-          } else {
-            toGetID.filter = valued;
+        if (valued.name.indexOf(".") === -1) {
+          valueds.push(valued);
+          if (field.key) {
+            if (!valued.data) {
+              toGetID.name = field.name;
+            } else {
+              toGetID.filter = valued;
+            }
           }
         }
+        results.push(valued);
       }
       let inserting = {
         registier: this._reg.registier,
@@ -122,14 +126,14 @@ export class AdRegModel {
         .post("/reg/new", inserting)
         .then((res) => {
           if (toGetID && toGetID.name) {
-            for (let valued of valueds) {
+            for (let valued of results) {
               if (valued.name === toGetID.name) {
                 valued.data = res.data;
                 break;
               }
             }
           }
-          resolve(valueds);
+          resolve(results);
         })
         .catch((err) => {
           reject(err);
