@@ -232,6 +232,9 @@ export class AdRegister extends QinColumn {
   }
 
   public addField(field: AdField) {
+    if (field.name.indexOf(".") > -1) {
+      field.putReadOnly();
+    }
     this._model.addField(field);
     this._editor.addField(field);
     this._search.addField(field);
