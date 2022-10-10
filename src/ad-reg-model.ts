@@ -57,6 +57,12 @@ export class AdRegModel {
     this._fields[index].value = value;
   }
 
+  public setValues(values: any[]) {
+    for (let i = 0; i < values.length; i++) {
+      this.setValue(i, values[i]);
+    }
+  }
+
   public clean() {
     for (let field of this._fields) {
       field.clean();

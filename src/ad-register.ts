@@ -49,6 +49,8 @@ export class AdRegister extends QinColumn {
   private _selectedValues: string[] = null;
   private _listener = new Array<AdRegListener>();
 
+  private _enableJoins = true;
+
   public constructor(module: AdModule, expect: AdExpect, based: AdRegBased) {
     super();
     this.unVisible();
@@ -298,7 +300,9 @@ export class AdRegister extends QinColumn {
           if (filter.linked) {
             let linkedField = this._model.getFieldByName(filter.linked.name);
             linkedField.addOnChanged((_) => {
-              this.updateJoined(join);
+              if (this.regModeEditable && this._enableJoins) {
+                this.updateJoined(join);
+              }
             });
             allLinkedFields.push(linkedField);
             allLinkedWith.push(filter.linked.with);
@@ -319,6 +323,9 @@ export class AdRegister extends QinColumn {
                   "You should not receive a related register on a not editable mode.",
                   "{qia_admister}(ErrCode-000014)"
                 );
+                return;
+              }
+              if (!this._enableJoins) {
                 return;
               }
               for (let i = 0; i < allLinkedFields.length; i++) {
@@ -670,25 +677,29 @@ export class AdRegister extends QinColumn {
 
   private tryInsert(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
+      this._enableJoins = false;
       this.model
         .insert()
         .then((res) => {
-          this._model.clean();
           this.focusFirstField();
-          this.displayInfo(AdApprise.INSERTED_REGISTER, "{qia_admister}(ErrCode-000009)");
-          let values = res.map((valued) => valued.data);
-          let size = this._table.getLinesSize();
+          const values = res.map((valued) => valued.data);
+          this._model.setValues(values);
+          const size = this._table.getLinesSize();
           this._table.addLine(values);
           if (this.hasScope(AdScope.NOTICE)) {
             this.tryTurnNoticeRow(size, values)
               .then((_) => resolve())
               .catch((err) => reject(err));
           } else {
+            this._model.clean();
             resolve();
           }
         })
         .catch((err) => {
           reject(err);
+        })
+        .finally(() => {
+          this._enableJoins = true;
         });
     });
   }
