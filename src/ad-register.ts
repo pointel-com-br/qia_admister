@@ -677,8 +677,15 @@ export class AdRegister extends QinColumn {
           this.focusFirstField();
           this.displayInfo(AdApprise.INSERTED_REGISTER, "{qia_admister}(ErrCode-000009)");
           let values = res.map((valued) => valued.data);
+          let size = this._table.getLinesSize();
           this._table.addLine(values);
-          resolve();
+          if (this.hasScope(AdScope.NOTICE)) {
+            this.tryTurnNoticeRow(size, values)
+              .then((_) => resolve())
+              .catch((err) => reject(err));
+          } else {
+            resolve();
+          }
         })
         .catch((err) => {
           reject(err);
