@@ -332,6 +332,7 @@ export class AdRegister extends QinColumn {
                 let linkedValue = res[allLinkedWith[i]];
                 allLinkedFields[i].value = linkedValue;
               }
+              this.qinpel.jobbed.show();
             });
           });
         }
