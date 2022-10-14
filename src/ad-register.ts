@@ -629,37 +629,61 @@ export class AdRegister extends QinColumn {
     });
   }
 
-  public tryGoFirst() {
-    if (this._table.getLinesSize() > 0) {
-      let values = this._table.getLine(0);
-      this.tryTurnNoticeRow(0, values);
-    }
+  public tryGoFirst(): Promise<AdRegTurningNotice> {
+    return new Promise<AdRegTurningNotice>((resolve, reject) => {
+      if (this._table.getLinesSize() > 0) {
+        let values = this._table.getLine(0);
+        this.tryTurnNoticeRow(0, values)
+          .then((res) => resolve(res))
+          .catch((err) => reject(err));
+      } else {
+        reject({ why: "Can not move the selected row" });
+      }
+    });
   }
 
-  public tryGoPrior() {
-    let size = this._table.getLinesSize();
-    let attempt = this._selectedRow - 1;
-    if (attempt >= 0 && attempt < size) {
-      let values = this._table.getLine(attempt);
-      this.tryTurnNoticeRow(attempt, values);
-    }
+  public tryGoPrior(): Promise<AdRegTurningNotice> {
+    return new Promise<AdRegTurningNotice>((resolve, reject) => {
+      let size = this._table.getLinesSize();
+      let attempt = this._selectedRow - 1;
+      if (attempt >= 0 && attempt < size) {
+        let values = this._table.getLine(attempt);
+        this.tryTurnNoticeRow(attempt, values)
+          .then((res) => resolve(res))
+          .catch((err) => reject(err));
+      } else {
+        reject({ why: "Can not move the selected row" });
+      }
+    });
   }
 
-  public tryGoNext() {
-    let size = this._table.getLinesSize();
-    let attempt = this._selectedRow + 1;
-    if (attempt < size) {
-      let values = this._table.getLine(attempt);
-      this.tryTurnNoticeRow(attempt, values);
-    }
+  public tryGoNext(): Promise<AdRegTurningNotice> {
+    return new Promise<AdRegTurningNotice>((resolve, reject) => {
+      let size = this._table.getLinesSize();
+      let attempt = this._selectedRow + 1;
+      if (attempt < size) {
+        let values = this._table.getLine(attempt);
+        this.tryTurnNoticeRow(attempt, values)
+          .then((res) => resolve(res))
+          .catch((err) => reject(err));
+      } else {
+        reject({ why: "Can not move the selected row" });
+      }
+    });
   }
 
-  public tryGoLast() {
-    let size = this._table.getLinesSize();
-    if (size > 0) {
-      let values = this._table.getLine(size - 1);
-      this.tryTurnNoticeRow(size - 1, values);
-    }
+  public tryGoLast(): Promise<AdRegTurningNotice> {
+    return new Promise<AdRegTurningNotice>((resolve, reject) => {
+      let size = this._table.getLinesSize();
+      if (size > 0) {
+        let values = this._table.getLine(size - 1);
+        this.tryTurnNoticeRow(size - 1, values)
+          .then((res) => resolve(res))
+          .catch((err) => reject(err));
+      } else {
+        reject({ why: "Can not move the selected row" });
+      }
+    });
   }
 
   public tryConfirm(): Promise<void> {
