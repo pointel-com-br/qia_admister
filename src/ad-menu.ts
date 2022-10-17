@@ -35,7 +35,6 @@ export class AdMenu extends QinColumn {
           item.module.appName,
           AdTools.newAdSetupOption(item.module, [AdScope.ALL])
         );
-        this.qinpel.jobbed.close();
       });
       line.put(button);
     }
