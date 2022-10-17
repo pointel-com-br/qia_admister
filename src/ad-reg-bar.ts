@@ -50,6 +50,10 @@ export class AdRegBar extends QinLine {
 
   private _qinMode = new QinIconPick({ readOnly: true });
 
+  private _qinRefresh = new QinButton({
+    icon: new QinIcon(QinAsset.FaceSync),
+  });
+
   private _qinGoFirst = new QinButton({
     icon: new QinIcon(QinAsset.FaceRUpChevronPush),
   });
@@ -138,6 +142,9 @@ export class AdRegBar extends QinLine {
   }
 
   private initMove() {
+    this._qinRefresh.install(this);
+    this._qinRefresh.style.putAsPadding(7);
+    this._qinRefresh.addActionMain((_) => this._reg.tryRefresh());
     this._qinGoFirst.install(this);
     this._qinGoFirst.style.putAsPadding(7);
     this._qinGoFirst.addActionMain((_) => this._reg.tryGoFirst());
@@ -193,6 +200,7 @@ export class AdRegBar extends QinLine {
       switch (mode) {
         case AdRegMode.INSERT:
           this._qinMode.value = this._qinInsert.asset;
+          this._qinRefresh.unDisplay();
           this._qinGoFirst.unDisplay();
           this._qinGoPrior.unDisplay();
           this._qinGoNext.unDisplay();
@@ -204,6 +212,7 @@ export class AdRegBar extends QinLine {
           break;
         case AdRegMode.SEARCH:
           this._qinMode.value = this._qinSearch.asset;
+          this._qinRefresh.unDisplay();
           this._qinGoFirst.unDisplay();
           this._qinGoPrior.unDisplay();
           this._qinGoNext.unDisplay();
@@ -215,6 +224,7 @@ export class AdRegBar extends QinLine {
           break;
         case AdRegMode.NOTICE:
           this._qinMode.value = this._qinNotice.asset;
+          this._qinRefresh.reDisplay();
           this._qinGoFirst.reDisplay();
           this._qinGoPrior.reDisplay();
           this._qinGoNext.reDisplay();
@@ -230,6 +240,7 @@ export class AdRegBar extends QinLine {
           break;
         case AdRegMode.MUTATE:
           this._qinMode.value = this._qinNotice.asset;
+          this._qinRefresh.unDisplay();
           this._qinGoFirst.unDisplay();
           this._qinGoPrior.unDisplay();
           this._qinGoNext.unDisplay();

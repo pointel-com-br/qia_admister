@@ -285,6 +285,13 @@ export class AdRegister extends QinColumn {
   }
 
   public prepare() {
+    this.qinpel.jobbed.addOnFocusGain(() => {
+      if (this._regMode == AdRegMode.NOTICE) {
+        this.tryRefresh().catch((err) =>
+          this.qinpel.jobbed.showError(err, "{qia_admister}(ErrCode-000017)")
+        );
+      }
+    });
     if (this._based.joins) {
       this.initJoins();
     }
@@ -627,6 +634,31 @@ export class AdRegister extends QinColumn {
           reject(err);
         });
     });
+  }
+
+  public tryRefresh(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (this._regMode == AdRegMode.NOTICE) {
+        this._loader
+          .refresh()
+          .then((res) => resolve(res))
+          .catch((err) => reject(err));
+      } else {
+        reject({ why: "There's no selected register to refresh." });
+      }
+    });
+  }
+
+  public refreshSelected(row: any[]) {
+    if (this._regMode == AdRegMode.NOTICE) {
+      const fields = this._model.fields;
+      this._selectedValues = Array(row.length);
+      for (let i = 0; i < row.length; i++) {
+        fields[i].value = row[i];
+        this._selectedValues[i] = row[i];
+      }
+      this.table.setLine(this._selectedRow, this._selectedValues);
+    }
   }
 
   public tryGoFirst(): Promise<AdRegTurningNotice> {
