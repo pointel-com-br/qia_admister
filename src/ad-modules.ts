@@ -98,4 +98,10 @@ export class AdModules {
     icon: QinAsset.FaceSales,
     registry: { name: "prepedidos" },
   };
+  static SALES_ITEMS: AdModule = {
+    appName: "adsales",
+    title: "Vendas Itens",
+    icon: QinAsset.FaceSalesItems,
+    registry: { name: "itens_prepedidos" },
+  };
 }
