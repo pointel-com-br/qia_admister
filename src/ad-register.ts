@@ -243,13 +243,13 @@ export class AdRegister extends QinColumn {
     this._table.addHead(field.title);
   }
 
-  public addDetail(setup: AdSetup) {
-    const title = setup.module.title;
-    let button = new QinButton({ label: new QinLabel(title) });
+  public addDetail(setup: AdSetup, title?: string) {
+    const detailTitle = title ?? setup.module.title;
+    let button = new QinButton({ label: new QinLabel(detailTitle) });
     button.addActionMain((_) => {
       if (!this.hasRowSelected()) {
         this.qinpel.jobbed.showError(
-          "You must select a row before show the details of " + title,
+          "You must select a row before show the details of " + detailTitle,
           "{qia_admister}(ErrCode-000015)"
         );
         return;
