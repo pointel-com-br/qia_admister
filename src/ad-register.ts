@@ -1,5 +1,6 @@
 import {
   QinAsset,
+  QinBase,
   QinButton,
   QinColumn,
   QinIcon,
@@ -241,6 +242,10 @@ export class AdRegister extends QinColumn {
     this._editor.addField(field);
     this._search.addField(field);
     this._table.addHead(field.title);
+  }
+
+  public addAct(kindred: QinBase) {
+    this._editor.addAct(kindred);
   }
 
   public addDetail(setup: AdSetup, title?: string) {
