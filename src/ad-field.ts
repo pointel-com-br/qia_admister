@@ -135,6 +135,15 @@ export class AdField {
     return this;
   }
 
+  public putOnChanged(waiter: QinWaiter<any>): AdField {
+    this._edit.addOnChanged(waiter);
+    return this;
+  }
+
+  public addOnChanged(waiter: QinWaiter<any>) {
+    this._edit.addOnChanged(waiter);
+  }
+
   public install(on: QinBase) {
     this._rows.install(on);
   }
@@ -177,10 +186,6 @@ export class AdField {
 
   public isEditable() {
     this._edit.isEditable();
-  }
-
-  public addOnChanged(waiter: QinWaiter<any>) {
-    this._edit.addOnChanged(waiter);
   }
 
   public focus() {
