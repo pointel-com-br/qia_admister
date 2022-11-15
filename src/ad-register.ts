@@ -6,7 +6,7 @@ import {
   QinIcon,
   QinLabel,
   QinSplitter,
-  QinStack,
+  QinStack
 } from "qin_case";
 import { AdApprise, AdApprised } from "./ad-apprise";
 import { AdExpect } from "./ad-expect";
@@ -480,6 +480,26 @@ export class AdRegister extends QinColumn {
 
   public hasScope(scope: AdScope): boolean {
     return this._expect.hasScope(scope);
+  }
+
+  public isRegModeInsert(): boolean {
+    return this.regMode == AdRegMode.INSERT;
+  }
+
+  public isRegModeMutate(): boolean {
+    return this.regMode == AdRegMode.MUTATE;
+  }
+
+  public isRegModeNotice(): boolean {
+    return this.regMode == AdRegMode.NOTICE;
+  }
+
+  public isRegModeSearch(): boolean {
+    return this.regMode == AdRegMode.SEARCH;
+  }
+
+  public hasSelectedNoticed(): boolean {
+    return this.isRowSelectedValid() && this.isRegModeNotice();
   }
 
   public tryTurnInsert(): Promise<AdRegTurningInsert> {
