@@ -4,17 +4,19 @@ import {
   QinComboSet,
   QinMutants,
   QinStringSet,
-  QinSuggestionSet,
+  QinSuggestionSet
 } from "qin_case";
 import { AdField } from "./ad-field";
 import { AdFilter } from "./ad-filter";
 import { AdNames } from "./ad-names";
 import { AdRegistry } from "./ad-registry";
+import { AdValued } from "./ad-valued";
 
 export type AdSetup = {
   module: AdModule;
   scopes: AdScope[];
   filters?: AdFilter[];
+  fixed?: AdValued[];
 };
 
 export enum AdScope {
@@ -38,17 +40,18 @@ function isSameModule(one: AdModule, two: AdModule): boolean {
   return one?.appName == two?.appName && one?.title == two?.title;
 }
 
-function newAdSetup(module: AdModule, scopes: AdScope[], filters?: AdFilter[]): AdSetup {
+function newAdSetup(module: AdModule, scopes: AdScope[], filters?: AdFilter[], fixed?: AdValued[]): AdSetup {
   return {
     module,
     scopes,
     filters,
+    fixed,
   };
 }
 
-function newAdSetupOption(module: AdModule, scopes: AdScope[], filters?: AdFilter[]) {
+function newAdSetupOption(module: AdModule, scopes: AdScope[], filters?: AdFilter[], fixed?: AdValued[]) {
   let result = {};
-  result[AdNames.AdSetup] = newAdSetup(module, scopes, filters);
+  result[AdNames.AdSetup] = newAdSetup(module, scopes, filters, fixed);
   return result;
 }
 

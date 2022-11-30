@@ -19,6 +19,7 @@ export class AdField {
   private _typed: AdTyped = null;
 
   private _value: any = null;
+  private _fixed: any = null;
 
   constructor(newer: AdFieldSet) {
     this._key = newer.key ?? false;
@@ -28,10 +29,10 @@ export class AdField {
     this._kind = newer.kind;
     this._options = newer.options;
     this._readOnly = newer.readOnly ?? false;
-    this.init();
+    this.init(newer);
   }
 
-  private init() {
+  private init(newer: AdFieldSet) {
     this._rows = new QinRows({ size: 2 });
     this._rows.style.putAsMargin(3);
     this._label = new QinLabel(this._title);
@@ -43,6 +44,8 @@ export class AdField {
       type: this._edit.getNature(),
       alias: this._alias,
     };
+    this.value = newer.initial;
+    this.fixed = newer.fixed;
   }
 
   public get key(): boolean {
@@ -108,8 +111,22 @@ export class AdField {
   }
 
   public set value(data: any) {
-    this._edit.value = data;
-    this._value = data;
+    const newValue = this.isFixed() ? this.fixed : data;
+    this._edit.value = newValue;
+    this._value = newValue;
+  }
+
+  public get fixed(): any {
+    return this._fixed;
+  }
+
+  public set fixed(data: any) {
+    this._fixed = data;
+    this.value = data;
+  }
+
+  public isFixed(): boolean {
+    return this._fixed !== null && this._fixed !== undefined;
   }
 
   public get fieldSource(): string {
@@ -169,7 +186,8 @@ export class AdField {
   }
 
   public clean() {
-    this.value = null;
+    const newValue = this.isFixed() ? this.fixed : null;
+    this.value = newValue;
   }
 
   public saved() {
@@ -201,4 +219,6 @@ export type AdFieldSet = {
   kind: QinMutants;
   options?: any;
   readOnly?: boolean;
+  initial?: any;
+  fixed?: any;
 };

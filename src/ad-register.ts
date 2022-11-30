@@ -24,6 +24,7 @@ import { AdRegistier } from "./ad-registier";
 import { AdSelect } from "./ad-select";
 import { AdModule, AdScope, AdSetup, AdTools } from "./ad-tools";
 import { AdTyped } from "./ad-typed";
+import { AdValued } from "./ad-valued";
 
 export class AdRegister extends QinColumn {
   private _module: AdModule;
@@ -260,6 +261,7 @@ export class AdRegister extends QinColumn {
         return;
       }
       let detailFilters: AdFilter[] = [];
+      let detailFixed: AdValued[] = [];
       if (setup.filters) {
         for (let filter of setup.filters) {
           if (filter.linked) {
@@ -275,6 +277,10 @@ export class AdRegister extends QinColumn {
               },
               ties: AdFilterTies.AND,
             });
+            detailFixed.push({
+              name: filter.linked.name,
+              data: fixedValue,
+            });
           } else {
             detailFilters.push(filter);
           }
@@ -283,7 +289,7 @@ export class AdRegister extends QinColumn {
       this.qinpel.chief.newJobber(
         setup.module.title,
         setup.module.appName,
-        AdTools.newAdSetupOption(setup.module, setup.scopes, detailFilters)
+        AdTools.newAdSetupOption(setup.module, setup.scopes, detailFilters, detailFixed)
       );
     });
     this._editor.addAct(button);
@@ -297,10 +303,27 @@ export class AdRegister extends QinColumn {
         );
       }
     });
+    if (this._expect.fixed) {
+      this.initFixed();
+    }
     if (this._based.joins) {
       this.initJoins();
     }
     this.applyPermissions();
+  }
+
+  private initFixed() {
+    for (const fixed of this._expect.fixed) {
+      const field = this.model.getFieldByName(fixed.name);
+      if (!field) {
+        this.qinpel.jobbed.showError(
+          "Could not set the fixed value for field " + fixed.name + ".",
+          "{qia_admister}(ErrCode-000019)"
+        );
+        continue;
+      }
+      field.fixed = fixed.data;
+    }
   }
 
   private initJoins() {
