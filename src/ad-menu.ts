@@ -6,7 +6,7 @@ import {
   QinLabel,
   QinLine,
   QinTitled,
-  QinTool,
+  QinTool
 } from "qin_case";
 import { QinGrandeur } from "qin_soul";
 import { AdExpect } from "./ad-expect";
@@ -77,6 +77,7 @@ export function menuStartUp(menus: AdMenuItem[]): QinBase {
         let expect = new AdExpect({
           scopes: adSetup.scopes,
           filters: adSetup.filters,
+          fixed: adSetup.fixed,
         });
         if (menu.register) {
           return new menu.register(menu.module, expect);
