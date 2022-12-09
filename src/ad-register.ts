@@ -481,8 +481,8 @@ export class AdRegister extends QinColumn {
     } else {
       this.turnMode(AdRegMode.SEARCH);
     }
-    this.reVisible();
     this._bar.finish();
+    this.reVisible();
   }
 
   public restrictInsert() {
