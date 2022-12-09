@@ -103,11 +103,12 @@ export class AdField {
   }
 
   public get value(): any {
-    let result = this._edit.value;
-    if (result === "") {
-      result = null;
-    }
-    return result;
+    const value = this.isFixed() ? this.fixed : this._edit.value;
+    if (this._edit.value != value) {
+      this._edit.value = value
+    };
+    this._value = value;
+    return value;
   }
 
   public set value(data: any) {
@@ -174,7 +175,10 @@ export class AdField {
     if (byNow === "") {
       byNow = null;
     }
-    return early != byNow;
+    if (early !== byNow) {
+      console.log("Has Mutations", this._name, early, typeof early, byNow, typeof byNow)
+    }
+    return early !== byNow;
   }
 
   public hasValue(): boolean {
