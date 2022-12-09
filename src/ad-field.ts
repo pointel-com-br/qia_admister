@@ -175,9 +175,6 @@ export class AdField {
     if (byNow === "") {
       byNow = null;
     }
-    if (early !== byNow) {
-      console.log("Has Mutations", this._name, early, typeof early, byNow, typeof byNow)
-    }
     return early !== byNow;
   }
 
