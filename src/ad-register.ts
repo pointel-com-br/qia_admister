@@ -473,16 +473,16 @@ export class AdRegister extends QinColumn {
   }
 
   private finish() {
-    this._bar.finish();
     if (
       this._expect.scopes.find((scope) => scope === AdScope.ALL || scope === AdScope.INSERT)
     ) {
-      this.tryTurnMode(AdRegMode.INSERT);
+      this.turnMode(AdRegMode.INSERT);
       this._model.clean();
     } else {
-      this.tryTurnMode(AdRegMode.SEARCH);
+      this.turnMode(AdRegMode.SEARCH);
     }
     this.reVisible();
+    this._bar.finish();
   }
 
   public restrictInsert() {

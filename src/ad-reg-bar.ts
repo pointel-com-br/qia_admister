@@ -5,7 +5,7 @@ import {
   QinIcon,
   QinIconPick,
   QinLine,
-  QinPopup,
+  QinPopup
 } from "qin_case";
 import { AdApprise } from "./ad-apprise";
 import { AdRegister, AdRegMode, AdRegTurn, AdRegTurningMode } from "./ad-register";
@@ -275,5 +275,6 @@ export class AdRegBar extends QinLine {
     if (!canChangeMode) {
       this._qinMode.unInstall();
     }
+    this.setMode(this._reg.regMode);
   }
 }
