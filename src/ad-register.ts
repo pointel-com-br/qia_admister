@@ -881,6 +881,10 @@ export class AdRegister extends QinColumn {
 
   private checkForMutations(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
+      if (!this.hasScope(AdScope.INSERT) && !this.hasScope(AdScope.MUTATE)) {
+        resolve();
+        return;
+      }
       const mutations = this._model.hasMutations();
       if (mutations) {
         let message =
