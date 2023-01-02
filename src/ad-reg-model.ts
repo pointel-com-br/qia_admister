@@ -177,7 +177,6 @@ export class AdRegModel {
       let deleting = {
         registier: this._reg.registier,
         filters: this.getKeyFieldsFilter(),
-        limit: 1,
       } as AdDelete;
       this._reg.qinpel.chief.talk
         .post("/reg/del", deleting)

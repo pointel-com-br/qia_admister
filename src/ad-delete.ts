@@ -4,5 +4,4 @@ import { AdRegistier } from "./ad-registier";
 export type AdDelete = {
   registier: AdRegistier;
   filters: AdFilter[];
-  limit: number;
 };
