@@ -114,7 +114,7 @@ export class AdField {
   public set value(data: any) {
     const newValue = this.isFixed() ? this.fixed : data;
     this._edit.value = newValue;
-    this._value = newValue;
+    this._value = this._edit.value;
   }
 
   public get fixed(): any {
