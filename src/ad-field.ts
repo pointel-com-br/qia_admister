@@ -167,6 +167,9 @@ export class AdField {
   }
 
   public hasMutations(): boolean {
+    if (this.isFixed()) {
+      return false;
+    }
     let early = this._value;
     if (early === "") {
       early = null;
