@@ -253,6 +253,10 @@ export class AdRegister extends QinColumn {
     const detailTitle = title ?? setup.module.title;
     let button = new QinButton({ label: new QinLabel(detailTitle) });
     button.addActionMain((_) => {
+      if (this.isRegModeInsert() || this.isRegModeMutate()) {
+        this.tryConfirm()
+      }
+      
       if (!this.hasRowSelected()) {
         this.qinpel.jobbed.showError(
           "You must select a row before show the details of " + detailTitle,
@@ -766,13 +770,15 @@ export class AdRegister extends QinColumn {
     });
   }
 
-  public tryConfirm(): Promise<void> {
-    if (this.regMode === AdRegMode.SEARCH) {
-      return this.trySelect();
-    } else if (this.regMode === AdRegMode.INSERT) {
+  public tryConfirm(): Promise<any> {
+    if (this.regMode === AdRegMode.INSERT) {
       return this.tryInsert();
     } else if (this.regMode === AdRegMode.MUTATE) {
       return this.tryUpdate();
+    } else if (this.regMode === AdRegMode.SEARCH) {
+      return this.trySelect();
+    } else if (this.regMode === AdRegMode.NOTICE) {
+      return this.tryGoNext();
     }
   }
 
