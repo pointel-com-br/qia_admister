@@ -253,48 +253,46 @@ export class AdRegister extends QinColumn {
     const detailTitle = title ?? setup.module.title;
     let button = new QinButton({ label: new QinLabel(detailTitle) });
     button.addActionMain((_) => {
-      if (this.isRegModeInsert() || this.isRegModeMutate()) {
-        this.tryConfirm()
-      }
-      
-      if (!this.hasRowSelected()) {
-        this.qinpel.jobbed.showError(
-          "You must select a row before show the details of " + detailTitle,
-          "{qia_admister}(ErrCode-000015)"
-        );
-        return;
-      }
-      let detailFilters: AdFilter[] = [];
-      let detailFixed: AdValued[] = [];
-      if (setup.filters) {
-        for (let filter of setup.filters) {
-          if (filter.linked) {
-            let indexField = this._model.getFieldIndexByName(filter.linked.with);
-            let fixedValue = this._selectedValues[indexField];
-            detailFilters.push({
-              seems: AdFilterSeems.SAME,
-              likes: AdFilterLikes.EQUALS,
-              valued: {
+      this.tryConfirm().then((_) => {
+        if (!this.hasRowSelected()) {
+          this.qinpel.jobbed.showError(
+            "You must select a row before show the details of " + detailTitle,
+            "{qia_admister}(ErrCode-000015)"
+          );
+          return;
+        }
+        let detailFilters: AdFilter[] = [];
+        let detailFixed: AdValued[] = [];
+        if (setup.filters) {
+          for (let filter of setup.filters) {
+            if (filter.linked) {
+              let indexField = this._model.getFieldIndexByName(filter.linked.with);
+              let fixedValue = this._selectedValues[indexField];
+              detailFilters.push({
+                seems: AdFilterSeems.SAME,
+                likes: AdFilterLikes.EQUALS,
+                valued: {
+                  name: filter.linked.name,
+                  type: this._model.fields[indexField].typed.type,
+                  data: fixedValue,
+                },
+                ties: AdFilterTies.AND,
+              });
+              detailFixed.push({
                 name: filter.linked.name,
-                type: this._model.fields[indexField].typed.type,
                 data: fixedValue,
-              },
-              ties: AdFilterTies.AND,
-            });
-            detailFixed.push({
-              name: filter.linked.name,
-              data: fixedValue,
-            });
-          } else {
-            detailFilters.push(filter);
+              });
+            } else {
+              detailFilters.push(filter);
+            }
           }
         }
-      }
-      this.qinpel.chief.newJobber(
-        setup.module.title,
-        setup.module.appName,
-        AdTools.newAdSetupOption(setup.module, setup.scopes, detailFilters, detailFixed)
-      );
+        this.qinpel.chief.newJobber(
+          setup.module.title,
+          setup.module.appName,
+          AdTools.newAdSetupOption(setup.module, setup.scopes, detailFilters, detailFixed)
+        );
+      });
     });
     this._editor.addAct(button);
   }
@@ -777,8 +775,8 @@ export class AdRegister extends QinColumn {
       return this.tryUpdate();
     } else if (this.regMode === AdRegMode.SEARCH) {
       return this.trySelect();
-    } else if (this.regMode === AdRegMode.NOTICE) {
-      return this.tryGoNext();
+    } else {
+      return Promise.resolve();
     }
   }
 
