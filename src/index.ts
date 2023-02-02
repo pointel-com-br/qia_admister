@@ -12,4 +12,4 @@ class AdMister extends QinPanel {
   }
 }
 
-new AdMister().style.putAsBody();
+new AdMister().putAsBody();

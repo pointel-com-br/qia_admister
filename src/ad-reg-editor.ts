@@ -23,7 +23,7 @@ export class AdRegEditor extends QinScroll {
     if (this._tabs == null) {
       this._tabs = new QinTabs();
       this._tabs.install(this._body);
-      this._tabs.style.putAsMarginTop(3);
+      this._tabs.styleAsMarginTop(3);
     }
     this._column = new QinColumn();
     this._tabs.addTab({ title, viewer: this._column });

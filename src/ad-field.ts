@@ -34,7 +34,7 @@ export class AdField {
 
   private init(newer: AdFieldSet) {
     this._rows = new QinRows({ size: 2 });
-    this._rows.style.putAsMargin(3);
+    this._rows.styleAsMargin(3);
     this._label = new QinLabel(this._title);
     this._rows.putOn(0, this._label);
     this._edit = QinMutantsArm.newEdit(this._kind, this._options);

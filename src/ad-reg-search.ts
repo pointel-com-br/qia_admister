@@ -1,13 +1,13 @@
 import {
-  QinAsset,
-  QinButton,
-  QinColumn,
-  QinCombo,
-  QinComboItem,
-  QinIcon,
-  QinLine,
-  QinScroll,
-  QinString,
+    QinAsset,
+    QinButton,
+    QinColumn,
+    QinCombo,
+    QinComboItem,
+    QinIcon,
+    QinLine,
+    QinScroll,
+    QinString
 } from "qin_case";
 import { AdField } from "./ad-field";
 import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filter";
@@ -136,9 +136,9 @@ class SearchClause extends QinLine {
     this._qinDel.addActionMain((_) => {
       this._dad.delClause(this);
     });
-    this.style.putAsPaddingBottom(4);
-    this.style.putAsBorderBottom(2, "#bbb");
-    this.style.putAsMarginBottom(4);
+    this.styleAsPaddingBottom(4);
+    this.styleAsBorderBottom(2, "#bbb");
+    this.styleAsMarginBottom(4);
   }
 
   public addField(item: QinComboItem) {
@@ -190,7 +190,7 @@ class SearchSame extends QinCombo {
     super();
     this.addItem({ title: "==", value: AdFilterSeems.SAME });
     this.addItem({ title: "!=", value: AdFilterSeems.DIVERSE });
-    this.style.putAsMaxWidth(64);
+    this.styleAsMaxWidth(64);
   }
 }
 
@@ -205,7 +205,7 @@ class SearchCondition extends QinCombo {
     this.addItem({ title: "$_", value: AdFilterLikes.STARTS_WITH });
     this.addItem({ title: "_$", value: AdFilterLikes.ENDS_WITH });
     this.addItem({ title: "_$_", value: AdFilterLikes.CONTAINS, selected: true });
-    this.style.putAsMaxWidth(64);
+    this.styleAsMaxWidth(64);
   }
 }
 
@@ -214,6 +214,6 @@ class SearchTie extends QinCombo {
     super();
     this.addItem({ title: "&&", value: AdFilterTies.AND });
     this.addItem({ title: "||", value: AdFilterTies.OR });
-    this.style.putAsMaxWidth(64);
+    this.styleAsMaxWidth(64);
   }
 }

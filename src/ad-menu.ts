@@ -1,12 +1,12 @@
 import {
-  QinBase,
-  QinButton,
-  QinColumn,
-  QinIcon,
-  QinLabel,
-  QinLine,
-  QinTitled,
-  QinTool
+    QinBase,
+    QinButton,
+    QinColumn,
+    QinIcon,
+    QinLabel,
+    QinLine,
+    QinTitled,
+    QinTool
 } from "qin_case";
 import { QinGrandeur } from "qin_soul";
 import { AdExpect } from "./ad-expect";
@@ -25,9 +25,9 @@ export class AdMenu extends QinColumn {
         icon: new QinIcon(item.module.icon, QinGrandeur.MEDIUM),
         label: new QinLabel(item.module.title),
       });
-      button.style.putAsMargin(3);
-      button.style.putAsPadding(9);
-      button.style.putAsMaxWidth(100);
+      button.styleAsMargin(3);
+      button.styleAsPadding(9);
+      button.styleAsMaxWidth(100);
       button.putAsColumn();
       button.addActionMain((_) => {
         this.qinpel.chief.newJobber(

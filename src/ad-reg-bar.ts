@@ -1,11 +1,11 @@
 import {
-  QinAsset,
-  QinButton,
-  QinDivider,
-  QinIcon,
-  QinIconPick,
-  QinLine,
-  QinPopup
+    QinAsset,
+    QinButton,
+    QinDivider,
+    QinIcon,
+    QinIconPick,
+    QinLine,
+    QinPopup
 } from "qin_case";
 import { AdApprise } from "./ad-apprise";
 import { AdRegister, AdRegMode, AdRegTurn, AdRegTurningMode } from "./ad-register";
@@ -87,14 +87,14 @@ export class AdRegBar extends QinLine {
     this.initMode();
     this.initMove();
     this.initMake();
-    this.style.putAsPaddingBottom(2);
-    this.style.putAsBorderBottom(2, "#999");
-    this.style.putAsMarginBottom(2);
+    this.styleAsPaddingBottom(2);
+    this.styleAsBorderBottom(2, "#999");
+    this.styleAsMarginBottom(2);
   }
 
   private initMenu() {
     this._qinMenu.install(this);
-    this._qinMenu.style.putAsPadding(7);
+    this._qinMenu.styleAsPadding(7);
     this._qinMenu.addActionMain((_) => this._qinPopup.showOnParent(this._qinMenu));
     this._qinMenuViewSingle.addActionMain((_) => {
       this._qinPopup.close();
@@ -143,42 +143,42 @@ export class AdRegBar extends QinLine {
 
   private initMove() {
     this._qinRefresh.install(this);
-    this._qinRefresh.style.putAsPadding(7);
+    this._qinRefresh.styleAsPadding(7);
     this._qinRefresh.addActionMain((_) => this._reg.tryRefresh());
     this._qinGoFirst.install(this);
-    this._qinGoFirst.style.putAsPadding(7);
+    this._qinGoFirst.styleAsPadding(7);
     this._qinGoFirst.addActionMain((_) => this._reg.tryGoFirst());
     this._qinGoPrior.install(this);
-    this._qinGoPrior.style.putAsPadding(7);
+    this._qinGoPrior.styleAsPadding(7);
     this._qinGoPrior.addActionMain((_) => this._reg.tryGoPrior());
     this._qinGoNext.install(this);
-    this._qinGoNext.style.putAsPadding(7);
+    this._qinGoNext.styleAsPadding(7);
     this._qinGoNext.addActionMain((_) => this._reg.tryGoNext());
     this._qinGoLast.install(this);
-    this._qinGoLast.style.putAsPadding(7);
+    this._qinGoLast.styleAsPadding(7);
     this._qinGoLast.addActionMain((_) => this._reg.tryGoLast());
   }
 
   private initMake() {
     this._qinMutate.install(this);
-    this._qinMutate.style.putAsPadding(7);
+    this._qinMutate.styleAsPadding(7);
     this._qinMutate.addActionMain((_) =>
       this._reg.tryTurnMutate().catch((err) => {
         this._reg.displayError(err, "{qia_admister}(ErrCode-000012)");
       })
     );
     this._qinConfirm.install(this);
-    this._qinConfirm.style.putAsPadding(7);
+    this._qinConfirm.styleAsPadding(7);
     this._qinConfirm.addActionMain((_) =>
       this._reg.tryConfirm().catch((err) => {
         this._reg.displayError(err, "{qia_admister}(ErrCode-000007)");
       })
     );
     this._qinCancel.install(this);
-    this._qinCancel.style.putAsPadding(7);
+    this._qinCancel.styleAsPadding(7);
     this._qinCancel.addActionMain((_) => this._reg.tryCancel());
     this._qinDelete.install(this);
-    this._qinDelete.style.putAsPadding(7);
+    this._qinDelete.styleAsPadding(7);
     this._qinDelete.addActionMain((_) =>
       this._reg
         .tryDelete()
