@@ -2,6 +2,7 @@ import { AdDelete } from "./ad-delete";
 import { AdField } from "./ad-field";
 import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filter";
 import { AdInsert } from "./ad-insert";
+import { AdRegCalls } from "./ad-reg-calls";
 import { AdRegister } from "./ad-register";
 import { AdToGetID } from "./ad-to-get-id";
 import { AdTyped } from "./ad-typed";
@@ -123,27 +124,24 @@ export class AdRegModel {
         }
         results.push(valued);
       }
-      let inserting = {
+      let query = {
         registier: this._reg.registier,
         valueds,
         toGetID,
       } as AdInsert;
-      this._reg.qinpel.chief.talk
-        .post("/reg/new", inserting)
-        .then((res) => {
+      AdRegCalls.insert(query)
+        .then((id) => {
           if (toGetID && toGetID.name) {
             for (let valued of results) {
               if (valued.name === toGetID.name) {
-                valued.data = res.data;
+                valued.data = id;
                 break;
               }
             }
           }
           resolve(results);
         })
-        .catch((err) => {
-          reject(err);
-        });
+        .catch((err) => reject(err));
     });
   }
 
@@ -153,40 +151,34 @@ export class AdRegModel {
       for (let field of this._fields) {
         valueds.push(field.valued);
       }
-      let updating = {
+      let query = {
         registier: this._reg.registier,
         valueds: this.getMutationValueds(),
         filters: this.getKeyFieldsFilter(),
       } as AdUpdate;
-      this._reg.qinpel.chief.talk
-        .post("/reg/set", updating)
+      AdRegCalls.update(query)
         .then((_) => {
           for (let field of this._fields) {
             field.saved();
           }
           resolve(valueds);
         })
-        .catch((err) => {
-          reject(err);
-        });
+        .catch((err) => reject(err));
     });
   }
 
   public async delete(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      let deleting = {
+      let query = {
         registier: this._reg.registier,
         filters: this.getKeyFieldsFilter(),
       } as AdDelete;
-      this._reg.qinpel.chief.talk
-        .post("/reg/del", deleting)
+      AdRegCalls.delete(query)
         .then((_) => {
           this.clean();
           resolve();
         })
-        .catch((err) => {
-          reject(err);
-        });
+        .catch((err) => reject(err));
     });
   }
 

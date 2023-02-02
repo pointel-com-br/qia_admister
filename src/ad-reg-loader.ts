@@ -1,7 +1,7 @@
-import { QinTool } from "qin_case";
 import { AdApprise } from "./ad-apprise";
 import { AdFilter, AdFilterLikes, AdFilterSeems } from "./ad-filter";
 import { AdJoinedTies } from "./ad-joined";
+import { AdRegCalls } from "./ad-reg-calls";
 import { AdRegister } from "./ad-register";
 import { AdSelect } from "./ad-select";
 
@@ -14,9 +14,9 @@ export class AdRegLoader {
 
   public refresh(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      const select = this.mountSelect(false);
-      if (!select.filters) {
-        select.filters = [];
+      const query = this.mountSelect(false);
+      if (!query.filters) {
+        query.filters = [];
       }
       for (const field of this._reg.model.fields) {
         if (field.key) {
@@ -25,13 +25,11 @@ export class AdRegLoader {
             likes: AdFilterLikes.EQUALS,
             valued: field.valued,
           } as AdFilter;
-          select.filters.push(filter);
+          query.filters.push(filter);
         }
       }
-      QinTool.qinpel.talk
-        .post("/reg/ask", select)
-        .then((res) => {
-          let rows = QinTool.qinpel.our.soul.body.getCSVRows(res.data);
+      AdRegCalls.select(query)
+        .then((rows) => {
           if (rows.length == 0) {
             this._reg.displayInfo(AdApprise.NO_RESULTS_FOUND, "{qia_admister}(ErrCode-000018)");
           } else {
@@ -45,15 +43,13 @@ export class AdRegLoader {
 
   public load(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      const select = this.mountSelect();
-      QinTool.qinpel.talk
-        .post("/reg/ask", select)
-        .then((res) => {
+      const query = this.mountSelect();
+      AdRegCalls.select(query)
+        .then((rows) => {
           this._reg
             .unselectAll()
             .then(() => {
               this._reg.table.delLines();
-              let rows = QinTool.qinpel.our.soul.body.getCSVRows(res.data);
               if (rows.length == 0) {
                 this._reg.displayInfo(
                   AdApprise.NO_RESULTS_FOUND,
@@ -68,9 +64,7 @@ export class AdRegLoader {
             })
             .catch((err) => reject(err));
         })
-        .catch((err) => {
-          reject(err);
-        });
+        .catch((err) => reject(err));
     });
   }
 

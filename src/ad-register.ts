@@ -804,9 +804,7 @@ export class AdRegister extends QinColumn {
             resolve();
           }
         })
-        .catch((err) => {
-          reject(err);
-        })
+        .catch((err) => reject(err))
         .finally(() => {
           this._enableJoins = true;
         });
