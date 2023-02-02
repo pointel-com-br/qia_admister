@@ -5,6 +5,34 @@ import { AdSelect } from "./ad-select";
 import { AdUpdate } from "./ad-update";
 
 export class AdRegCalls {
+  public static selectOne(query: AdSelect): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      AdRegCalls.select(query)
+        .then(res => {
+          if (res && res.length > 0 && res[0] && res[0].length > 0) {
+            resolve(res[0][0]);
+          } else {
+            resolve(null);
+          }
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  public static selectRow(query: AdSelect): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+      AdRegCalls.select(query)
+        .then(res => {
+          if (res && res.length > 0) {
+            resolve(res[0]);
+          } else {
+            resolve(null);
+          }
+        })
+        .catch(err => reject(err));
+    });
+  }
+
   public static select(query: AdSelect): Promise<string[][]> {
     return new Promise<string[][]>((resolve, reject) => {
       QinTool.qinpel.talk
