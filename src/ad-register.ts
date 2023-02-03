@@ -336,7 +336,7 @@ export class AdRegister extends QinColumn {
         join.filters.forEach((filter) => {
           if (filter.linked) {
             let linkedField = this._model.getFieldByName(filter.linked.name);
-            linkedField.addOnChanged((_) => {
+            linkedField.putOnChanged((_) => {
               if (this.regModeEditable && this._enableJoins) {
                 this.updateJoined(join);
               }

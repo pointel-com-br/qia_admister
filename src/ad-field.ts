@@ -153,22 +153,19 @@ export class AdField {
     return this;
   }
 
+  public putOnEntered(waiter: QinWaiter<any>): AdField {
+    this._edit.addOnEntered(waiter);
+    return this;
+  }
+
   public putOnChanged(waiter: QinWaiter<any>): AdField {
     this._edit.addOnChanged(waiter);
     return this;
   }
 
-  public addOnChanged(waiter: QinWaiter<any>) {
-    this._edit.addOnChanged(waiter);
-  }
-
   public putOnExited(waiter: QinWaiter<any>): AdField {
     this._edit.addOnExited(waiter);
     return this;
-  }
-
-  public addOnExited(waiter: QinWaiter<any>) {
-    this._edit.addOnExited(waiter);
   }
 
   public install(on: QinBase) {
