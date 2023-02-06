@@ -8,6 +8,7 @@ import {
   QinSplitter,
   QinStack
 } from "qin_case";
+import { QinAction } from "qin_soul";
 import { AdApprise, AdApprised } from "./ad-apprise";
 import { AdExpect } from "./ad-expect";
 import { AdField } from "./ad-field";
@@ -352,9 +353,7 @@ export class AdRegister extends QinColumn {
           }
         });
         if (allLinkedFields.length > 0) {
-          let callRelater = new QinButton({ icon: new QinIcon(QinAsset.FaceSearchLink) });
-          allLinkedFields[allLinkedFields.length - 1].rows.putOn(1, callRelater);
-          callRelater.addActionMain((_) => {
+          let actionRelater: QinAction = (_) => {
             let jobber = this.qinpel.chief.newJobber(
               join.module.title,
               join.module.appName,
@@ -377,7 +376,12 @@ export class AdRegister extends QinColumn {
               }
               this.qinpel.jobbed.show();
             });
-          });
+          };
+          let buttonRelater = new QinButton({ icon: new QinIcon(QinAsset.FaceSearchLink) });
+          buttonRelater.addActionMain(actionRelater);
+          let lastField = allLinkedFields[allLinkedFields.length - 1];
+          lastField.rows.putOn(1, buttonRelater);
+          lastField.edit.addActionKey(["f4"], actionRelater);
         }
       }
     });
