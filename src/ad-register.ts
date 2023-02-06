@@ -102,6 +102,9 @@ export class AdRegister extends QinColumn {
     this._body.tabIndex = 1;
     this._table.tabIndex = 2;
     this.initViewSchema();
+    this.addActionKey(["esc", "escape"], (_) => {
+      this.tryCancel().then((_) => this.qinpel.jobbed.close());
+    });
   }
 
   private initViewSchema() {
@@ -839,14 +842,24 @@ export class AdRegister extends QinColumn {
     });
   }
 
-  public tryCancel() {
-    if (this.regMode === AdRegMode.INSERT) {
-      this.checkForMutations().then((_) => this._model.clean());
-    } else if (this.regMode === AdRegMode.SEARCH) {
-      this._search.clean();
-    } else if (this.regMode === AdRegMode.MUTATE) {
-      this.tryTurnMode(AdRegMode.NOTICE);
-    }
+  public tryCancel(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (this.regMode === AdRegMode.INSERT) {
+        this.checkForMutations()
+          .then((_) => {
+            this._model.clean();
+            resolve();
+          })
+          .catch((err) => reject(err));
+      } else if (this.regMode === AdRegMode.MUTATE) {
+        this.tryTurnMode(AdRegMode.NOTICE)
+          .then((_) => resolve())
+          .catch((err) => reject(err));
+      } else if (this.regMode === AdRegMode.SEARCH) {
+        this._search.clean();
+        resolve();
+      }
+    });
   }
 
   public tryDelete(): Promise<AdRegTurningDelete> {
