@@ -1,9 +1,10 @@
 import { AdApprise } from "./ad-apprise";
-import { AdFilter, AdFilterLikes, AdFilterSeems } from "./ad-filter";
+import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filter";
 import { AdJoinedTies } from "./ad-joined";
 import { AdRegCalls } from "./ad-reg-calls";
 import { AdRegister } from "./ad-register";
 import { AdSelect } from "./ad-select";
+import { AdValued } from "./ad-valued";
 
 export class AdRegLoader {
   private _reg: AdRegister;
@@ -68,7 +69,10 @@ export class AdRegLoader {
     });
   }
 
-  private mountSelect(addSearchingFor: boolean = true): AdSelect {
+  public mountSelect(
+    addSearchFilters: boolean = true,
+    plusFilters: AdValued[] = null
+  ): AdSelect {
     let registier = this._reg.registier;
     let fields = this._reg.model.typeds;
     let joins = this._reg.based.joins;
@@ -82,30 +86,32 @@ export class AdRegLoader {
         }
       }
     }
-    let filters: AdFilter[] = null;
+    let filters: AdFilter[] = [];
     if (this._reg.based.filters) {
-      if (filters == null) {
-        filters = [];
-      }
       filters.push(...this._reg.based.filters);
     }
     if (this._reg.expect.filters) {
-      if (filters == null) {
-        filters = [];
-      }
       filters.push(...this._reg.expect.filters);
     }
-    if (addSearchingFor) {
-      let searchingFor = this._reg.search.getFilters();
-      if (searchingFor) {
-        if (filters == null) {
-          filters = [];
-        }
-        filters.push(...searchingFor);
+    if (addSearchFilters) {
+      let searchFilters = this._reg.search.getFilters();
+      if (searchFilters) {
+        filters.push(...searchFilters);
+      }
+    }
+    if (plusFilters) {
+      for (const valued of plusFilters) {
+        let filter: AdFilter = {
+          seems: AdFilterSeems.SAME,
+          likes: AdFilterLikes.EQUALS,
+          valued: valued,
+          ties: AdFilterTies.AND,
+        };
+        filters.push(filter);
       }
     }
     let orders = this._reg.based.orders;
-    let result = { registier, fields, joins, filters, orders, limit: 300 } as AdSelect;
+    let result: AdSelect = { registier, fields, joins, filters, orders, limit: 300 };
     return result;
   }
 }

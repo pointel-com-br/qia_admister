@@ -16,6 +16,7 @@ import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filte
 import { AdJoined } from "./ad-joined";
 import { AdRegBar } from "./ad-reg-bar";
 import { AdRegBased } from "./ad-reg-based";
+import { AdRegCalls } from "./ad-reg-calls";
 import { AdRegEditor } from "./ad-reg-editor";
 import { AdRegLoader } from "./ad-reg-loader";
 import { AdRegModel } from "./ad-reg-model";
@@ -50,8 +51,10 @@ export class AdRegister extends QinColumn {
   private _regView: AdRegView;
   private _selectedRow: number = -1;
   private _selectedValues: string[] = null;
-  private _listener = new Array<AdRegListener>();
 
+  private _details = new Array<AdRegDetail>();
+
+  private _listener = new Array<AdRegListener>();
   private _enableJoins = true;
 
   public constructor(module: AdModule, expect: AdExpect, based: AdRegBased) {
@@ -259,8 +262,8 @@ export class AdRegister extends QinColumn {
     this._editor.addAct(kindred);
   }
 
-  public addDetail(setup: AdSetup, title?: string) {
-    const detailTitle = title ?? setup.module.title;
+  public addDetail(detail: AdRegDetail) {
+    const detailTitle = detail.title ?? detail.setup.module.title;
     let button = new QinButton({ label: new QinLabel(detailTitle) });
     button.addActionMain((_) => {
       this.tryConfirm().then((_) => {
@@ -273,8 +276,8 @@ export class AdRegister extends QinColumn {
         }
         let detailFilters: AdFilter[] = [];
         let detailFixed: AdValued[] = [];
-        if (setup.filters) {
-          for (let filter of setup.filters) {
+        if (detail.setup.filters) {
+          for (let filter of detail.setup.filters) {
             if (filter.linked) {
               let indexField = this._model.getFieldIndexByName(filter.linked.with);
               let fixedValue = this._selectedValues[indexField];
@@ -298,13 +301,19 @@ export class AdRegister extends QinColumn {
           }
         }
         this.qinpel.chief.newJobber(
-          setup.module.title,
-          setup.module.appName,
-          AdTools.newAdSetupOption(setup.module, setup.scopes, detailFilters, detailFixed)
+          detailTitle,
+          detail.setup.module.appName,
+          AdTools.newAdSetupOption(
+            detail.setup.module,
+            detail.setup.scopes,
+            detailFilters,
+            detailFixed
+          )
         );
       });
     });
     this._editor.addAct(button);
+    this._details.push(detail);
   }
 
   public prepare() {
@@ -802,25 +811,27 @@ export class AdRegister extends QinColumn {
       this._enableJoins = false;
       this.model
         .insert()
-        .then((res) => {
-          this.focusFirstField();
-          const values = res.map((valued) => valued.data);
-          this._model.setValues(values);
-          const size = this._table.getLinesSize();
-          this._table.addLine(values);
-          if (this.hasScope(AdScope.NOTICE)) {
-            this.tryTurnNoticeRow(size, values)
-              .then((_) => resolve())
-              .catch((err) => reject(err));
-          } else {
-            this._model.clean();
-            resolve();
-          }
+        .then((regKeys) => {
+          let query = this.loader.mountSelect(false, regKeys);
+          AdRegCalls.selectRow(query)
+            .then((res) => {
+              this.focusFirstField();
+              this._model.setValues(res);
+              const size = this._table.getLinesSize();
+              this._table.addLine(res);
+              if (this.hasScope(AdScope.NOTICE)) {
+                this.tryTurnNoticeRow(size, res)
+                  .then((_) => resolve())
+                  .catch((err) => reject(err));
+              } else {
+                this._model.clean();
+                resolve();
+              }
+            })
+            .catch((err) => reject(err));
         })
         .catch((err) => reject(err))
-        .finally(() => {
-          this._enableJoins = true;
-        });
+        .finally(() => (this._enableJoins = true));
     });
   }
 
@@ -1141,3 +1152,8 @@ export enum AdRegParams {
   VIEW_HORIZONTAL_SIDE_A = "VIEW_HORIZONTAL_SIDE_A",
   VIEW_HORIZONTAL_SIDE_B = "VIEW_HORIZONTAL_SIDE_B",
 }
+
+export type AdRegDetail = {
+  setup: AdSetup;
+  title?: string;
+};

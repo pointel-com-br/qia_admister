@@ -26,6 +26,7 @@ export { AdRegBased } from "./ad-reg-based";
 export { AdRegCalls } from "./ad-reg-calls";
 export { AdRegDidCaller } from "./ad-register";
 export { AdRegEditor } from "./ad-reg-editor";
+export { AdRegKeys } from "./ad-reg-model";
 export { AdRegListener } from "./ad-register";
 export { AdRegLoader } from "./ad-reg-loader";
 export { AdRegMode } from "./ad-register";

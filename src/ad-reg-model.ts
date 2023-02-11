@@ -58,10 +58,22 @@ export class AdRegModel {
     this._fields[index].value = value;
   }
 
+  public getValue(index: number): any {
+    return this._fields[index].value;
+  }
+
   public setValues(values: any[]) {
     for (let i = 0; i < values.length; i++) {
       this.setValue(i, values[i]);
     }
+  }
+
+  public getValues(): any[] {
+    let result = []
+    for (const field of this._fields) {
+      result.push(field.value)
+    }
+    return result;
   }
 
   public clean() {
@@ -105,16 +117,19 @@ export class AdRegModel {
     }
   }
 
-  public async insert(): Promise<AdValued[]> {
-    return new Promise<AdValued[]>((resolve, reject) => {
+  public async insert(): Promise<AdRegKeys> {
+    return new Promise<AdRegKeys>((resolve, reject) => {
       let valueds = new Array<AdValued>();
-      let results = new Array<AdValued>();
+      let regKeys = new Array<AdValued>();
       let toGetID: AdToGetID = {};
       for (let field of this._fields) {
         let valued = field.valued;
         if (valued.name.indexOf(".") === -1) {
-          valueds.push(valued);
+          if (valued.data || field.key) {
+            valueds.push(valued);
+          }
           if (field.key) {
+            regKeys.push(valued);
             if (!valued.data) {
               toGetID.name = field.name;
             } else {
@@ -122,46 +137,50 @@ export class AdRegModel {
             }
           }
         }
-        results.push(valued);
       }
-      let query = {
+      let query: AdInsert = {
         registier: this._reg.registier,
         valueds,
         toGetID,
-      } as AdInsert;
+      };
       AdRegCalls.insert(query)
         .then((id) => {
           if (toGetID && toGetID.name) {
-            for (let valued of results) {
+            for (let valued of regKeys) {
               if (valued.name === toGetID.name) {
                 valued.data = id;
                 break;
               }
             }
           }
-          resolve(results);
+          resolve(regKeys);
         })
         .catch((err) => reject(err));
     });
   }
 
-  public async update(): Promise<AdValued[]> {
-    return new Promise<AdValued[]>((resolve, reject) => {
+  public async update(): Promise<AdRegKeys> {
+    return new Promise<AdRegKeys>((resolve, reject) => {
       let valueds = new Array<AdValued>();
+      let regKeys = new Array<AdValued>();
       for (let field of this._fields) {
-        valueds.push(field.valued);
+        let valued = field.valued;
+        valueds.push(valued);
+        if (field.key) {
+          regKeys.push(valued);
+        }
       }
-      let query = {
+      let query: AdUpdate = {
         registier: this._reg.registier,
         valueds: this.getMutationValueds(),
         filters: this.getKeyFieldsFilter(),
-      } as AdUpdate;
+      };
       AdRegCalls.update(query)
         .then((_) => {
           for (let field of this._fields) {
             field.saved();
           }
-          resolve(valueds);
+          resolve(regKeys);
         })
         .catch((err) => reject(err));
     });
@@ -208,3 +227,5 @@ export class AdRegModel {
     return result;
   }
 }
+
+export type AdRegKeys = AdValued[];
