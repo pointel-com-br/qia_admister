@@ -24,6 +24,7 @@ export { AdOrder } from "./ad-order";
 export { AdRegBar } from "./ad-reg-bar";
 export { AdRegBased } from "./ad-reg-based";
 export { AdRegCalls } from "./ad-reg-calls";
+export { AdRegDetail } from "./ad-register";
 export { AdRegDidCaller } from "./ad-register";
 export { AdRegEditor } from "./ad-reg-editor";
 export { AdRegKeys } from "./ad-reg-model";

@@ -194,7 +194,7 @@ export class AdRegister extends QinColumn {
     return this._model;
   }
 
-  public get identifier() {
+  public get identifier(): string {
     return this._identifier;
   }
 
@@ -232,6 +232,14 @@ export class AdRegister extends QinColumn {
 
   public get dataSource(): string {
     return this._based.registier.registry.alias ?? this._based.registier.registry.name;
+  }
+
+  public get details(): AdRegDetail[] {
+    return this._details;
+  }
+
+  public get selectedValues(): string[] {
+    return this._selectedValues;
   }
 
   public addTab(title: string) {
@@ -547,6 +555,11 @@ export class AdRegister extends QinColumn {
 
   public hasSelectedNoticed(): boolean {
     return this.isRowSelectedValid() && this.isRegModeNotice();
+  }
+
+  public getSelectValueOf(fieldName: string) {
+    let index = this._model.getFieldIndexByName(fieldName);
+    return this._selectedValues[index];
   }
 
   public tryTurnInsert(): Promise<AdRegTurningInsert> {
@@ -875,43 +888,33 @@ export class AdRegister extends QinColumn {
 
   public tryDelete(): Promise<AdRegTurningDelete> {
     return new Promise<AdRegTurningDelete>((resolve, reject) => {
-      this.checkForMutations()
-        .then(() => {
-          if (!this.hasRowSelected()) {
-            reject({ why: "No selected row to delete" });
-            return;
+      if (!this.hasRowSelected()) {
+        reject({ why: "No selected row to delete" });
+        return;
+      }
+      this.qinpel.jobbed
+        .showDialog("Do you really want to delete?")
+        .then((want) => {
+          if (want) {
+            let turning: AdRegTurningDelete = {
+              seeRow: this._selectedRow,
+            };
+            let canceled = this.callTryListeners(AdRegTurn.TURN_DELETE, turning);
+            if (canceled) {
+              reject(canceled);
+            }
+            this._model
+              .delete()
+              .then(() => {
+                this._table.delLine(this._selectedRow);
+                this.callDidListeners(AdRegTurn.TURN_DELETE, turning);
+                this.tryTurnMode(AdRegMode.INSERT);
+                resolve(turning);
+              })
+              .catch((err) => reject(err));
           }
-          this.qinpel.jobbed
-            .showDialog("Do you really want to delete?")
-            .then((want) => {
-              if (want) {
-                let turning = {
-                  seeRow: this._selectedRow,
-                } as AdRegTurningDelete;
-                let canceled = this.callTryListeners(AdRegTurn.TURN_DELETE, turning);
-                if (canceled) {
-                  reject(canceled);
-                }
-                this._model
-                  .delete()
-                  .then(() => {
-                    this._table.delLine(this._selectedRow);
-                    this.callDidListeners(AdRegTurn.TURN_DELETE, turning);
-                    this.tryTurnMode(AdRegMode.INSERT);
-                    resolve(turning);
-                  })
-                  .catch((err) => {
-                    reject(err);
-                  });
-              }
-            })
-            .catch((err) => {
-              reject(err);
-            });
         })
-        .catch((err) => {
-          reject(err);
-        });
+        .catch((err) => reject(err));
     });
   }
 

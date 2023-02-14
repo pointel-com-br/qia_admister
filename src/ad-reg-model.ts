@@ -4,6 +4,7 @@ import { AdFilter, AdFilterLikes, AdFilterSeems, AdFilterTies } from "./ad-filte
 import { AdInsert } from "./ad-insert";
 import { AdRegCalls } from "./ad-reg-calls";
 import { AdRegister } from "./ad-register";
+import { AdRegistier } from "./ad-registier";
 import { AdToGetID } from "./ad-to-get-id";
 import { AdTyped } from "./ad-typed";
 import { AdUpdate } from "./ad-update";
@@ -69,9 +70,9 @@ export class AdRegModel {
   }
 
   public getValues(): any[] {
-    let result = []
+    let result = [];
     for (const field of this._fields) {
-      result.push(field.value)
+      result.push(field.value);
     }
     return result;
   }
@@ -188,14 +189,52 @@ export class AdRegModel {
 
   public async delete(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      let query = {
+      let detailsPromise = new Array<Promise<number>>();
+      for (const detail of this._reg.details) {
+        let registier: AdRegistier = {
+          base: this._reg.registier.base,
+          registry: detail.setup.module.registry,
+        };
+        let deleteDetail: AdDelete = {
+          registier,
+          filters: [],
+        };
+        if (detail.setup.filters) {
+          for (const filter of detail.setup.filters) {
+            if (filter.linked) {
+              let indexField = this._reg.model.getFieldIndexByName(filter.linked.with);
+              let fixedValue = this._reg.selectedValues[indexField];
+              deleteDetail.filters.push({
+                seems: AdFilterSeems.SAME,
+                likes: AdFilterLikes.EQUALS,
+                valued: {
+                  name: filter.linked.name,
+                  type: this._reg.model.fields[indexField].typed.type,
+                  data: fixedValue,
+                },
+                ties: AdFilterTies.AND,
+              });
+            } else {
+              deleteDetail.filters.push(filter);
+            }
+          }
+        }
+        if (deleteDetail.filters.length > 0) {
+          detailsPromise.push(AdRegCalls.delete(deleteDetail));
+        }
+      }
+      let deleteQuery: AdDelete = {
         registier: this._reg.registier,
         filters: this.getKeyFieldsFilter(),
-      } as AdDelete;
-      AdRegCalls.delete(query)
+      };
+      Promise.all(detailsPromise)
         .then((_) => {
-          this.clean();
-          resolve();
+          AdRegCalls.delete(deleteQuery)
+            .then((_) => {
+              this.clean();
+              resolve();
+            })
+            .catch((err) => reject(err));
         })
         .catch((err) => reject(err));
     });
