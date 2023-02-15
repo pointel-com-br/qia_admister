@@ -21,11 +21,11 @@ export class AdRegLoader {
       }
       for (const field of this._reg.model.fields) {
         if (field.key) {
-          let filter = {
+          let filter: AdFilter = {
             seems: AdFilterSeems.SAME,
             likes: AdFilterLikes.EQUALS,
             valued: field.valued,
-          } as AdFilter;
+          };
           query.filters.push(filter);
         }
       }
