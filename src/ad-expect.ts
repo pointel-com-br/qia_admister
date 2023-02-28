@@ -1,5 +1,6 @@
 import { QinWaiters } from "qin_soul";
 import { AdFilter } from "./ad-filter";
+import { AdPrepare } from "./ad-prepare";
 import { AdScope } from "./ad-tools";
 import { AdValued } from "./ad-valued";
 
@@ -7,12 +8,15 @@ export class AdExpect {
   private _scopes: AdScope[];
   private _filters: AdFilter[];
   private _fixed: AdValued[];
+  private _prepare: AdPrepare[];
   private _waiters: QinWaiters<any>;
 
   public constructor(options: AdExpectSet) {
     this._scopes = options.scopes;
     this._filters = options.filters;
     this._fixed = options.fixed;
+    this._prepare = options.prepare;
+    this._waiters = options.waiters;
   }
 
   public get scopes(): AdScope[] {
@@ -25,6 +29,10 @@ export class AdExpect {
 
   public get fixed(): AdValued[] {
     return this._fixed;
+  }
+
+  public get prepare(): AdPrepare[] {
+    return this._prepare;
   }
 
   public get waiters(): QinWaiters<any> {
@@ -76,4 +84,6 @@ export type AdExpectSet = {
   scopes: AdScope[];
   filters?: AdFilter[];
   fixed?: AdValued[];
+  prepare?: AdPrepare[];
+  waiters?: QinWaiters<any>;
 };

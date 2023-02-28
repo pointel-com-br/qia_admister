@@ -1,18 +1,24 @@
 import {
-    QinBase,
-    QinButton,
-    QinColumn,
-    QinIcon,
-    QinLabel,
-    QinLine,
-    QinTitled,
-    QinTool
+  QinBase,
+  QinButton,
+  QinColumn, Qine, QinIcon,
+  QinLabel,
+  QinLine,
+  QinTitled
 } from "qin_case";
 import { QinGrandeur } from "qin_soul";
 import { AdExpect } from "./ad-expect";
 import { AdNames } from "./ad-names";
 import { AdRegister } from "./ad-register";
 import { AdModule, AdScope, AdSetup, AdTools } from "./ad-tools";
+
+export type AdMenuAct<T extends QinBase> = new (module: AdModule, expect: AdExpect) => T;
+
+export type AdMenuItem = {
+  group?: string;
+  module: AdModule;
+  register?: AdMenuAct<AdRegister>;
+};
 
 export class AdMenu extends QinColumn {
   private _lines = new Array<QinTitled>();
@@ -61,16 +67,8 @@ export class AdMenu extends QinColumn {
   }
 }
 
-export type AdMenuAct<T extends QinBase> = new (module: AdModule, expect: AdExpect) => T;
-
-export type AdMenuItem = {
-  group?: string;
-  module: AdModule;
-  register?: AdMenuAct<AdRegister>;
-};
-
-export function menuStartUp(menus: AdMenuItem[]): QinBase {
-  const adSetup = QinTool.qinpel.jobbed.getOption(AdNames.AdSetup) as AdSetup;
+export function adMenuStartUp(menus: AdMenuItem[]): QinBase {
+  const adSetup = Qine.qinpel.jobbed.getOption(AdNames.AdSetup) as AdSetup;
   if (adSetup && adSetup.module) {
     for (const menu of menus) {
       if (AdTools.isSameModule(menu.module, adSetup.module)) {

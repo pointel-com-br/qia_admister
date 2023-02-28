@@ -3,7 +3,7 @@
   "displayName": "AdMister",
   "description": "AdMister ( Administration Craft ) is a manager with all the common functionalities and the launcher for the user applications of administration tools on the Qinpel platform.",
   "keywords": [],
-  "repository": "https://github.com/pointeldevs/qia_admister",
+  "repository": "https://github.com/pointel-com-br/qia_admister",
   "author": "Éverton M. Vieira",
   "license": "LGPL-3.0-only",
   "version": "0.1.0",

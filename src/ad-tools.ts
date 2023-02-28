@@ -40,6 +40,12 @@ function isSameModule(one: AdModule, two: AdModule): boolean {
   return one?.appName == two?.appName && one?.title == two?.title;
 }
 
+function newAdSetupOption(module: AdModule, scopes: AdScope[], filters?: AdFilter[], fixed?: AdValued[]) {
+  let result = {};
+  result[AdNames.AdSetup] = newAdSetup(module, scopes, filters, fixed);
+  return result;
+}
+
 function newAdSetup(module: AdModule, scopes: AdScope[], filters?: AdFilter[], fixed?: AdValued[]): AdSetup {
   return {
     module,
@@ -47,12 +53,6 @@ function newAdSetup(module: AdModule, scopes: AdScope[], filters?: AdFilter[], f
     filters,
     fixed,
   };
-}
-
-function newAdSetupOption(module: AdModule, scopes: AdScope[], filters?: AdFilter[], fixed?: AdValued[]) {
-  let result = {};
-  result[AdNames.AdSetup] = newAdSetup(module, scopes, filters, fixed);
-  return result;
 }
 
 function newAdFieldInteger(name: string, title: string): AdField {
