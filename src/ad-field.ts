@@ -19,7 +19,8 @@ export class AdField {
   private _typed: AdTyped = null;
 
   private _value: any = null;
-  private _fixed: any = null;
+  private _fixedValue: any = null;
+  private _defaultValue: any = null;
 
   constructor(newer: AdFieldSet) {
     this._key = newer.key ?? false;
@@ -44,8 +45,9 @@ export class AdField {
       type: this._edit.getNature(),
       alias: this._alias,
     };
-    this.value = newer.initial;
-    this.fixed = newer.fixed;
+    this.value = newer.initialValue;
+    this.fixedValue = newer.fixedValue;
+    this.defaultValue = newer.defaultValue;
   }
 
   public get key(): boolean {
@@ -103,7 +105,7 @@ export class AdField {
   }
 
   public get value(): any {
-    const value = this.isFixed() ? this.fixed : this._edit.value;
+    const value = this.isFixedValue() ? this.fixedValue : this._edit.value;
     if (this._edit.value != value) {
       this._edit.value = value
     };
@@ -112,22 +114,35 @@ export class AdField {
   }
 
   public set value(data: any) {
-    const newValue = this.isFixed() ? this.fixed : data;
+    const newValue = this.isFixedValue() ? this.fixedValue : data;
     this._edit.value = newValue;
     this._value = this._edit.value;
   }
 
-  public get fixed(): any {
-    return this._fixed;
+  public get fixedValue(): any {
+    return this._fixedValue;
   }
 
-  public set fixed(data: any) {
-    this._fixed = data;
+  public set fixedValue(data: any) {
+    this._fixedValue = data;
     this.value = data;
   }
 
-  public isFixed(): boolean {
-    return this._fixed !== null && this._fixed !== undefined;
+  public isFixedValue(): boolean {
+    return this._fixedValue !== null && this._fixedValue !== undefined;
+  }
+
+  public get defaultValue(): any {
+    return this._defaultValue;
+  }
+
+  public set defaultValue(data: any) {
+    this._defaultValue = data;
+    this.value = data;
+  }
+
+  public hasDefaultValue(): boolean {
+    return this._defaultValue !== null && this._defaultValue !== undefined;
   }
 
   public get fieldSource(): string {
@@ -173,7 +188,7 @@ export class AdField {
   }
 
   public hasMutations(): boolean {
-    if (this.isFixed()) {
+    if (this.isFixedValue()) {
       return false;
     }
     let early = this._value;
@@ -196,7 +211,7 @@ export class AdField {
   }
 
   public clean() {
-    const newValue = this.isFixed() ? this.fixed : null;
+    const newValue = this.isFixedValue() ? this.fixedValue : this.hasDefaultValue() ? this.defaultValue : null;
     this.value = newValue;
   }
 
@@ -229,6 +244,7 @@ export type AdFieldSet = {
   kind: QinMutants;
   options?: any;
   readOnly?: boolean;
-  initial?: any;
-  fixed?: any;
+  initialValue?: any;
+  fixedValue?: any;
+  defaultValue?: any;
 };
