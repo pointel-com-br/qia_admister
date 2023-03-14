@@ -351,7 +351,7 @@ export class AdRegister extends QinColumn {
         );
         continue;
       }
-      field.fixed = fixed.data;
+      field.fixedValue = fixed.data;
     }
   }
 
