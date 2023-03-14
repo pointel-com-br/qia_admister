@@ -1,6 +1,7 @@
 import { Qine } from "qin_case";
 import { AdDelete } from "./ad-delete";
 import { AdInsert } from "./ad-insert";
+import { AdJoinedTies } from "./ad-joined";
 import { AdSelect } from "./ad-select";
 import { AdUpdate } from "./ad-update";
 
@@ -35,6 +36,16 @@ export class AdRegCalls {
 
   public static select(query: AdSelect): Promise<string[][]> {
     return new Promise<string[][]>((resolve, reject) => {
+      if (query.joins) {
+        for (let join of query.joins) {
+          if (!join.registry) {
+            join.registry = join.module.registry;
+          }
+          if (!join.ties) {
+            join.ties = AdJoinedTies.LEFT;
+          }
+        }
+      }
       Qine.qinpel.talk
         .post("/reg/ask", query)
         .then((res) => resolve(Qine.qinpel.our.soul.body.getCSVRows(res.data)))
