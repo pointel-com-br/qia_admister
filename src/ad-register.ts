@@ -8,7 +8,7 @@ import {
   QinSplitter,
   QinStack
 } from "qin_case";
-import { QinAction } from "qin_soul";
+import { QinAction, QinEvent } from "qin_soul";
 import { AdApprise, AdApprised } from "./ad-apprise";
 import { AdExpect } from "./ad-expect";
 import { AdField } from "./ad-field";
@@ -339,6 +339,7 @@ export class AdRegister extends QinColumn {
       this.initJoins();
     }
     this.applyPermissions();
+    this.initShortcuts();
   }
 
   private initFixed() {
@@ -401,7 +402,7 @@ export class AdRegister extends QinColumn {
           buttonRelater.addActionMain(actionRelater);
           let lastField = allLinkedFields[allLinkedFields.length - 1];
           lastField.rows.putOn(1, buttonRelater);
-          lastField.edit.addActionKey(["f4"], actionRelater);
+          lastField.edit.addActionKey(["F5"], actionRelater);
         }
       }
     });
@@ -503,6 +504,26 @@ export class AdRegister extends QinColumn {
       })
       .catch((err) => this.qinpel.jobbed.showError(err, "{qia_admister}(ErrCode-000016)"));
   }
+
+  private initShortcuts() {
+    this.addAction(this._actShortcuts);
+    this.model.fields.forEach((field) => field.edit.addAction(this._actShortcuts));
+  }
+
+  private _actShortcuts = (ev: QinEvent) => {
+    if (ev.fromTyping && !ev.isStart) {
+      if (ev.keyTyped === "F2") {
+        this.tryTurnInsert();
+        ev.consumed();
+      } else if (ev.keyTyped === "F3") {
+        this.tryTurnSearch();
+        ev.consumed();
+      } else if (ev.keyTyped === "F4") {
+        this.tryTurnMutate();
+        ev.consumed();
+      } 
+    }
+  };
 
   private finish() {
     if (
