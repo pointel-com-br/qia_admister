@@ -52,7 +52,7 @@ export class AdRegister extends QinColumn {
   private _selectedRow: number = -1;
   private _selectedValues: string[] = null;
 
-  private _details = new Array<AdRegDetail>();
+  private _details = new Array<AdRegDetailMade>();
 
   private _listener = new Array<AdRegListener>();
   private _enableJoins = true;
@@ -273,8 +273,8 @@ export class AdRegister extends QinColumn {
   public addDetail(detail: AdRegDetail) {
     const detailTitle = detail.title ?? detail.setup.module.title;
     let button = new QinButton({ label: new QinLabel(detailTitle) });
-    button.addActionMain((_) => {
-      this.tryConfirm().then((_) => {
+    let action = (_) => {
+      this.tryConfirm().then(() => {
         if (!this.hasRowSelected()) {
           this.qinpel.jobbed.showError(
             "You must select a row before show the details of " + detailTitle,
@@ -319,9 +319,14 @@ export class AdRegister extends QinColumn {
           )
         );
       });
-    });
+    };
+    button.addActionMain(action);
     this._editor.addAct(button);
-    this._details.push(detail);
+    this._details.push({
+      setup: detail.setup,
+      title: detailTitle,
+      action: action,
+    });
   }
 
   public prepare() {
@@ -512,16 +517,33 @@ export class AdRegister extends QinColumn {
 
   private _actShortcuts = (ev: QinEvent) => {
     if (ev.fromTyping && !ev.isStart) {
-      if (ev.keyTyped === "F2") {
+      if (ev.keyPressed === "F2") {
         this.tryTurnInsert();
         ev.consumed();
-      } else if (ev.keyTyped === "F3") {
+      } else if (ev.keyPressed === "F3") {
         this.tryTurnSearch();
         ev.consumed();
-      } else if (ev.keyTyped === "F4") {
+      } else if (ev.keyPressed === "F4") {
         this.tryTurnMutate();
         ev.consumed();
-      } 
+      } else if (ev.isEnter && !ev.hasCtrl) {
+        this.tryConfirm().then(() => {
+          if (ev.hasAlt) {
+            this.tryTurnInsert();
+          } else if (ev.hasShift) {
+            this.tryTurnSearch();
+          }
+        });
+        ev.consumed();
+      } else if (ev.hasCtrl && ev.hasAlt) {
+        for (const detail of this._details) {
+          if (detail.title && detail.title.toUpperCase().startsWith(ev.keyPressed)) {
+            detail.action(ev);
+            ev.consumed();
+            break;
+          }
+        }
+      }
     }
   };
 
@@ -1180,4 +1202,10 @@ export enum AdRegParams {
 export type AdRegDetail = {
   setup: AdSetup;
   title?: string;
+};
+
+type AdRegDetailMade = {
+  setup: AdSetup;
+  title: string;
+  action: QinAction;
 };
