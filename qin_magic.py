@@ -13,17 +13,15 @@ def automagic():
 def app_automagic():
     print("Configuring an application...")
     download("https://github.com/pointel-com-br/qin_soul/raw/master/clean.py", "clean.py")
-    download(
-        "https://github.com/pointel-com-br/qin_soul/raw/master/gen_build.py", "gen_build.py")
-    download(
-        "https://github.com/pointel-com-br/qin_soul/raw/master/mk_all.py", "mk_all.py")
-    download(
-        "https://github.com/pointel-com-br/qin_soul/raw/master/pk_browser.py", "pk_browser.py")
-    download(
-        "https://github.com/pointel-com-br/qin_soul/raw/master/put_on.py", "put_on.py")
+    download("https://github.com/pointel-com-br/qin_soul/raw/master/gen_build.py", "gen_build.py")
+    download("https://github.com/pointel-com-br/qin_soul/raw/master/mk_all.py", "mk_all.py")
+    download("https://github.com/pointel-com-br/qin_soul/raw/master/pk_browser.py", "pk_browser.py")
+    download("https://github.com/pointel-com-br/qin_soul/raw/master/put_on.py", "put_on.py")
     app_name = get_app_name()
     app_mk_put_mode(app_name, 'TEST')
     app_mk_put_mode(app_name, 'PROD')
+    download("https://github.com/pointel-com-br/qin_soul/raw/master/put_prod.sh", "put_prod.sh")
+    download("https://github.com/pointel-com-br/qin_soul/raw/master/put_test.sh", "put_test.sh")
 
 
 def app_mk_put_mode(app_name: str, mode: str):

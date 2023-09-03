@@ -1,0 +1,1 @@
+py qin_auto.py
