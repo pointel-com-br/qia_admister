@@ -29,8 +29,7 @@ def app_mk_put_mode(app_name: str, mode: str):
     folder_name = get_folder_name()
     if folder_name.startswith("qia_") or folder_name == "qin_case":
         kind = "APP"
-    source = f"""#!/usr/bin/env python3
-import put_on
+    source = f"""import put_on
 
 put_on.make("{app_name}", put_on.Mode.{mode}, put_on.Kind.{kind})
 """

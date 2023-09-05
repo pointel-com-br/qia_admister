@@ -5,8 +5,7 @@ import urllib.request
 
 def self_automagic():
     print("Updating the magic...")
-    download(
-        "https://github.com/pointel-com-br/qin_soul/raw/master/qin_magic.py", "qin_magic.py")
+    download("https://github.com/pointel-com-br/qin_soul/raw/master/qin_magic.py", "qin_magic.py")
     with open("qin_magic.py") as file:
         exec(file.read(), globals())
 
