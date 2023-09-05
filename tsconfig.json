@@ -3,6 +3,7 @@
     "target": "ES6",
     "module": "commonjs",
     "moduleResolution": "node",
+    "sourceMap": false,
     "declaration": true,
     "declarationDir": "types",
     "removeComments": true,
