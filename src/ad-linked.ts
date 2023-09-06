@@ -1,4 +1,4 @@
 export type AdLinked = {
-  name: string;
-  with: string;
+    name: string;
+    with: string;
 };

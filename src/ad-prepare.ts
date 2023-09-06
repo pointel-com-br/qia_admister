@@ -1,3 +1,1 @@
-export class AdPrepare {
-  
-}
+export class AdPrepare {}

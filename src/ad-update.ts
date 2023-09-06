@@ -3,8 +3,8 @@ import { AdRegistier } from "./ad-registier";
 import { AdValued } from "./ad-valued";
 
 export type AdUpdate = {
-  registier: AdRegistier;
-  valueds: AdValued[];
-  filters?: AdFilter[];
-  limit?: number;
+    registier: AdRegistier;
+    valueds: AdValued[];
+    filters?: AdFilter[];
+    limit?: number;
 };

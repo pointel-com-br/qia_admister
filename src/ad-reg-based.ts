@@ -4,8 +4,8 @@ import { AdOrder } from "./ad-order";
 import { AdRegistier } from "./ad-registier";
 
 export class AdRegBased {
-  registier: AdRegistier;
-  joins?: AdJoined[];
-  filters?: AdFilter[];
-  orders?: AdOrder[];
+    registier: AdRegistier;
+    joins?: AdJoined[];
+    filters?: AdFilter[];
+    orders?: AdOrder[];
 }

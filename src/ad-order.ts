@@ -1,4 +1,4 @@
 export type AdOrder = {
-  name: string;
-  desc?: boolean;
+    name: string;
+    desc?: boolean;
 };

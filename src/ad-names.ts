@@ -1,10 +1,10 @@
 export enum AdNames {
-  AdSetup = "AdSetup",
+    AdSetup = "AdSetup",
 
-  AdBoard = "AdBoard",
-  AdMister = "AdMister",
-  AdPeople = "AdPeople",
-  AdProduct = "AdProduct",
-  AdProject = "AdProject",
-  AdSales = "AdSales",
+    AdBoard = "AdBoard",
+    AdMister = "AdMister",
+    AdPeople = "AdPeople",
+    AdProduct = "AdProduct",
+    AdProject = "AdProject",
+    AdSales = "AdSales",
 }
